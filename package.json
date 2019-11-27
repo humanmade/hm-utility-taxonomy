@@ -5,5 +5,8 @@
   "main": "index.js",
   "scripts": {},
   "author": "Human Made",
-  "license": "GPL-2.0-or-later"
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "webpack": "^4.41.2"
+  }
 }
