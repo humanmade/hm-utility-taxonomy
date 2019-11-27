@@ -5,12 +5,12 @@ import { registerPlugin } from '@wordpress/plugins';
 
 import Panel from './components/Panel';
 
-const PLUGIN = 'hm-utilities';
+const {groups, taxonomy } = hmUtilities;
 
 domReady( () => {
-	hmUtilities.forEach( group => {
+	groups.forEach( group => {
 		const { id, icon = null } = group;
-		const pluginId = `${ PLUGIN }-${ id }`;
+		const pluginId = `${ taxonomy }-${ id }`;
 
 		registerPlugin( pluginId, {
 			icon,
