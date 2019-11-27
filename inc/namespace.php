@@ -52,3 +52,21 @@ function register_tax() : void {
 		]
 	);
 }
+
+/**
+ * Get utility options
+ *
+ * @param string $post_type Post type name.
+ *
+ * @return array Array of utility options.
+ */
+function get_utility_options( string $post_type ) : array {
+	/**
+	 * Allow plugins to add their utility options
+	 *
+	 * @param array $group
+	 */
+	$terms = apply_filters( 'hm-utility-data', [], $post_type );
+
+	return $terms;
+}
