@@ -44,6 +44,7 @@ function register_tax() : void {
 		$post_types,
 		[
 			'public'       => false,
+			'rest_base'    => 'hm-utilities',
 			'rewrite'      => false,
 			'show_in_rest' => true,
 			'labels'       => [
