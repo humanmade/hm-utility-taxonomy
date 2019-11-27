@@ -1,0 +1,9 @@
+{
+  "name": "@humanmade/utility-taxonomy",
+  "version": "1.0.0",
+  "description": "A hidden taxonomy, used for filtering of posts/pages etc. in a way that is more performant than using the likes of `wp_post_meta`.",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Human Made",
+  "license": "GPL-2.0-or-later"
+}
