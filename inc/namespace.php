@@ -56,19 +56,19 @@ function register_tax() : void {
 }
 
 /**
- * Get utility options
+ * Get groups
  *
  * @param string $post_type Post type name.
  *
- * @return array Array of utility options.
+ * @return array Array of utility groups.
  */
-function get_utility_options( string $post_type ) : array {
+function get_groups( string $post_type ) : array {
 	/**
-	 * Allow plugins to add their utility options
+	 * Allow plugins to add their groups
 	 *
 	 * @param array $group
 	 */
-	$terms = apply_filters( 'hm-utility-options', [], $post_type );
+	$terms = apply_filters( 'hm-utility-groups', [], $post_type );
 
 	return $terms;
 }
@@ -87,7 +87,7 @@ function enqueue_editor_assets() : void {
 		return;
 	}
 
-	$data = get_utility_options( $screen->post_type );
+	$data = get_groups( $screen->post_type );
 
 	if ( empty( $data ) ) {
 		return;
