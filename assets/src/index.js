@@ -7,24 +7,15 @@ import Panel from './components/Panel';
 
 const PLUGIN = 'hm-utilities';
 
-function Utilities() {
-	return (
-		<>
-			{ hmUtilities.map( group => (
-				<Panel
-					key={ group.id }
-					className={ PLUGIN }
-					{ ...group }
-				/>
-			) ) }
-		</>
-	);
-}
-
 domReady( () => {
-	registerPlugin( PLUGIN, {
-		icon: null,
-		render: Utilities,
+	hmUtilities.forEach( group => {
+		const { id, icon = null } = group;
+		const pluginId = `${ PLUGIN }-${ id }`;
+
+		registerPlugin( pluginId, {
+			icon,
+			render: () => <Panel className={ pluginId } { ...group } />,
+		} );
 	} );
 } );
 
