@@ -13,6 +13,7 @@ const TAXONOMY  = 'hm-utility';
  */
 function bootstrap() : void {
 	add_action( 'init', __NAMESPACE__ . '\\register_tax', 11 );
+	add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_editor_assets' );
 }
 
 /**
@@ -66,7 +67,50 @@ function get_utility_options( string $post_type ) : array {
 	 *
 	 * @param array $group
 	 */
-	$terms = apply_filters( 'hm-utility-data', [], $post_type );
+	$terms = apply_filters( 'hm-utility-options', [], $post_type );
 
 	return $terms;
+}
+
+/**
+ * Enqueue editor assets
+ */
+function enqueue_editor_assets() : void {
+	$screen = get_current_screen();
+
+	if ( $screen->base !== 'post' ) {
+		return;
+	}
+
+	if ( ! in_array( $screen->post_type, get_post_types(), true ) ) {
+		return;
+	}
+
+	$data = get_utility_options( $screen->post_type );
+
+	if ( empty( $data ) ) {
+		return;
+	}
+
+	wp_enqueue_script(
+		TAXONOMY,
+		plugin_dir_url( dirname( __FILE__ ) ) . 'assets/dist/main.js',
+		[
+			'wp-components',
+			'wp-dom-ready',
+			'wp-edit-post',
+			'wp-plugins',
+		],
+		'1.0.0',
+		true
+	);
+
+	wp_add_inline_script(
+		TAXONOMY,
+		sprintf(
+			'var hmUtilities = %s;',
+			wp_json_encode( $data )
+		),
+		'before'
+	);
 }
