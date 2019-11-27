@@ -87,9 +87,9 @@ function enqueue_editor_assets() : void {
 		return;
 	}
 
-	$data = get_groups( $screen->post_type );
+	$groups = get_groups( $screen->post_type );
 
-	if ( empty( $data ) ) {
+	if ( empty( $groups ) ) {
 		return;
 	}
 
@@ -105,6 +105,11 @@ function enqueue_editor_assets() : void {
 		'1.0.0',
 		true
 	);
+
+	$data = [
+		'groups'   => $groups,
+		'taxonomy' => TAXONOMY,
+	];
 
 	wp_add_inline_script(
 		TAXONOMY,
