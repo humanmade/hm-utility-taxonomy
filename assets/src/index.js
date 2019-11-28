@@ -5,7 +5,7 @@ import { registerPlugin } from '@wordpress/plugins';
 
 import Panel from './components/Panel';
 
-const {groups, taxonomy } = hmUtilities;
+const { groups, taxonomy } = hmUtilities;
 
 domReady( () => {
 	groups.forEach( group => {
@@ -14,7 +14,7 @@ domReady( () => {
 
 		registerPlugin( pluginId, {
 			icon,
-			render: () => <Panel className={ pluginId } { ...group } />,
+			render: () => <Panel className={ pluginId } taxonomy={ taxonomy } { ...group } />,
 		} );
 	} );
 } );
