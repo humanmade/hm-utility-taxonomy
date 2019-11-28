@@ -81,7 +81,8 @@ Panel.propTypes = {
 	} ) ),
 };
 
-export function addSelectors( select, { taxonomy } ) {
+export function addSelectors( select, ownProps ) {
+	const { options, taxonomy } = ownProps;
 	const { getCurrentPost, getEditedPostAttribute } = select( 'core/editor' );
 	const { getEntityRecords, getTaxonomy } = select( 'core' );
 	const { _links: postLinks } = getCurrentPost();
@@ -98,12 +99,15 @@ export function addSelectors( select, { taxonomy } ) {
 	}
 
 	const { rest_base: restBase } = taxObject;
+	const termSlugs = options.map( ( { value } ) => value );
 
 	return {
 		taxObject,
 		hasAssignAction: 'wp:action-assign-' + restBase in postLinks,
 		postTerms: getEditedPostAttribute( restBase ),
-		taxTerms: getEntityRecords( 'taxonomy', restBase ),
+		taxTerms: getEntityRecords( 'taxonomy', restBase, {
+			slug: termSlugs,
+		} ),
 	};
 }
 
