@@ -13,11 +13,10 @@ export function Panel( props ) {
 		className,
 		default: defaultValue, // TODO.
 		finalOptions,
+		getPostTerms,
 		id,
 		// multiple, // TODO.
 		options,
-		postTerms,
-		taxonomy,
 		title,
 		updateTerms,
 	} = props;
@@ -26,17 +25,11 @@ export function Panel( props ) {
 		return null;
 	}
 
+	const postTerms = getPostTerms();
 	const Control = options.length > 1
 		? CheckboxControl
 		: ToggleControl;
 
-	const onChange = ( checked, value ) => {
-		const nextPostTerms = checked
-			? postTerms.concat( value )
-			: postTerms.filter( item => item !== value );
-
-		updateTerms( nextPostTerms, taxonomy );
-	};
 
 	return (
 		<PluginDocumentSettingPanel className={ className } name={ id } title={ title }>
@@ -45,7 +38,7 @@ export function Panel( props ) {
 					key={ `${ className }-${ id }-${ value }` }
 					checked={ postTerms.indexOf( value ) >= 0 }
 					label={ label }
-					onChange={ checked => onChange( checked, value ) }
+					onChange={ checked => updateTerms( checked, value ) }
 				/>
 			) ) }
 		</PluginDocumentSettingPanel>
@@ -71,8 +64,9 @@ Panel.propTypes = {
 	taxonomy: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
 	// Props below are supplied by `addSelectors()`.
+	getPostTerms: PropTypes.func.isRequired,
 	hasAssignAction: PropTypes.bool.isRequired,
-	postTerms: PropTypes.arrayOf( PropTypes.number ).isRequired,
+	// Props below are supplied by `addDispatchers()`.
 	updateTerms: PropTypes.func.isRequired,
 };
 
