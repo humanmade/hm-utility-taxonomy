@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { withSelect } from '@wordpress/data';
+import { compose } from '@wordpress/compose';
 import { CheckboxControl, ToggleControl } from '@wordpress/components';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 
-export default function Panel( props ) {
+export function Panel( props ) {
 	const {
 		className,
 		default: defaultValue,
@@ -56,6 +58,38 @@ Panel.propTypes = {
 		label: PropTypes.string.isRequired,
 		value: PropTypes.string.isRequired,
 	} ) ).isRequired,
+	taxonomy: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
 };
 
+export function addSelectors( select, { taxonomy } ) {
+	const { getCurrentPost, getEditedPostAttribute } = select( 'core/editor' );
+	const { getEntityRecords, getTaxonomy } = select( 'core' );
+	const { _links: postLinks } = getCurrentPost();
+	const taxObject = getTaxonomy( taxonomy );
+
+	// Taxonomy object hasn't been fetched yet.
+	if ( ! taxObject ) {
+		return {
+			taxObject,
+			hasAssignAction: false,
+			postTerms: [],
+			taxTerms: [],
+		};
+	}
+
+	const { rest_base: restBase } = taxObject;
+
+	return {
+		taxObject,
+		hasAssignAction: 'wp:action-assign-' + restBase in postLinks,
+		postTerms: getEditedPostAttribute( restBase ),
+		taxTerms: getEntityRecords( 'taxonomy', restBase ),
+	};
+}
+
+const ComposedPanel = compose( [
+	withSelect( addSelectors ),
+] )( Panel );
+
+export default ComposedPanel;
