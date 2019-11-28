@@ -97,7 +97,9 @@ function enqueue_editor_assets() : void {
 		TAXONOMY,
 		plugin_dir_url( dirname( __FILE__ ) ) . 'assets/dist/main.js',
 		[
+			'wp-compose',
 			'wp-components',
+			'wp-data',
 			'wp-dom-ready',
 			'wp-edit-post',
 			'wp-plugins',
