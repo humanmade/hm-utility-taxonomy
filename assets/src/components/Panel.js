@@ -20,6 +20,14 @@ export function Panel( props ) {
 		return null;
 	}
 
+	const finalOptions = taxTerms.map( ( { slug } ) => {
+		return options.find( item => item.value === slug );
+	} ).filter( Boolean );
+
+	if ( ! finalOptions.length ) {
+		return null;
+	}
+
 	const [ selected, select ]= useState( defaultValue );
 	const Control = options.length > 1
 		? CheckboxControl
@@ -35,7 +43,7 @@ export function Panel( props ) {
 
 	return (
 		<PluginDocumentSettingPanel className={ className } name={ id } title={ title }>
-			{ options.map( ( { label, value } ) => (
+			{ finalOptions.map( ( { label, value } ) => (
 				<Control
 					key={ `${ className }-${ id }-${ value }` }
 					checked={ selected.indexOf( value ) >= 0 }
