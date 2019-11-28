@@ -1,4 +1,4 @@
-export default function panelSelectors( select, ownProps ) {
+export default function addSelectors( select, ownProps ) {
 	const { options, taxonomy } = ownProps;
 	const { getCurrentPost, getEditedPostAttribute } = select( 'core/editor' );
 	const { getEntityRecords, getTaxonomy } = select( 'core' );

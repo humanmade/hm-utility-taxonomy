@@ -5,8 +5,8 @@ import { CheckboxControl, ToggleControl } from '@wordpress/components';
 import { withDispatch, withSelect } from '@wordpress/data';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 
-import panelSelectors from '../data/panel-selectors';
-import panelDispatchers from '../data/panel-dispatchers';
+import addSelectors from './selectors';
+import addDispatchers from './dispatchers';
 
 export function Panel( props ) {
 	const {
@@ -106,8 +106,8 @@ Panel.propTypes = {
 };
 
 const ComposedPanel = compose( [
-	withSelect( panelSelectors ),
-	withDispatch( panelDispatchers ),
+	withSelect( addSelectors ),
+	withDispatch( addDispatchers ),
 ] )( Panel );
 
 export default ComposedPanel;

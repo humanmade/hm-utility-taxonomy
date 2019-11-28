@@ -1,4 +1,4 @@
-export default function panelDispatchers( dispatch ) {
+export default function addDispatchers( dispatch ) {
 	const { editPost } = dispatch( 'core/editor' );
 
 	return {
