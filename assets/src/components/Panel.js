@@ -44,6 +44,7 @@ export function Panel( props ) {
 
 Panel.defaultProps = {
 	multiple: true,
+	taxObject: null,
 };
 
 Panel.propTypes = {
@@ -60,6 +61,19 @@ Panel.propTypes = {
 	} ) ).isRequired,
 	taxonomy: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
+	// Props below are supplied by `addSelectors()`.
+	hasAssignAction: PropTypes.bool.isRequired,
+	postTerms: PropTypes.array.isRequired, // TODO.
+	taxObject: PropTypes.shape( {
+		name: PropTypes.string.isRequired,
+		rest_base: PropTypes.string.isRequired,
+		slug: PropTypes.string.isRequired,
+	} ),
+	taxTerms: PropTypes.arrayOf( PropTypes.shape( {
+		id: PropTypes.string.isRequired,
+		name: PropTypes.string.isRequired,
+		slug: PropTypes.string.isRequired,
+	} ) ),
 };
 
 export function addSelectors( select, { taxonomy } ) {
