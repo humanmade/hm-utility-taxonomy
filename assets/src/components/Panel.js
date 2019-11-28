@@ -13,7 +13,12 @@ export function Panel( props ) {
 		// multiple, // TODO.
 		options,
 		title,
+		taxTerms,
 	} = props;
+
+	if ( ! taxTerms || ! taxTerms.length ) {
+		return null;
+	}
 
 	const [ selected, select ]= useState( defaultValue );
 	const Control = options.length > 1
