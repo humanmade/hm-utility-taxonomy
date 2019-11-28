@@ -12,7 +12,9 @@ module.exports = {
 		/* eslint-disable key-spacing */
 		react:                   'React',
 		'react-dom':             'ReactDOM',
+		'@wordpress/compose':    { this: [ 'wp', 'compose' ] },
 		'@wordpress/components': { this: [ 'wp', 'components' ] },
+		'@wordpress/data':       { this: [ 'wp', 'data' ] },
 		'@wordpress/dom-ready':  { this: [ 'wp', 'domReady' ] },
 		'@wordpress/edit-post':  { this: [ 'wp', 'editPost' ] },
 		'@wordpress/plugins':    { this: [ 'wp', 'plugins' ] },
