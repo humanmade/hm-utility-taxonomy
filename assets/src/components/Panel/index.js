@@ -11,34 +11,16 @@ import addDispatchers from './dispatchers';
 export function Panel( props ) {
 	const {
 		className,
-		default: defaultValue,
+		default: defaultValue, // TODO.
+		finalOptions,
 		id,
 		// multiple, // TODO.
 		options,
 		postTerms,
 		title,
 		taxObject,
-		taxTerms,
 		updateTerms,
 	} = props;
-
-	if ( ! taxTerms || ! taxTerms.length ) {
-		return null;
-	}
-
-	const finalOptions = taxTerms.map( ( { id, slug } ) => {
-		const option = options.find( item => item.value === slug );
-
-		if ( ! option ) {
-			return null;
-		}
-
-		return {
-			...option,
-			value: id,
-		};
-
-	} ).filter( Boolean );
 
 	if ( ! finalOptions.length ) {
 		return null;
@@ -97,11 +79,6 @@ Panel.propTypes = {
 		rest_base: PropTypes.string.isRequired,
 		slug: PropTypes.string.isRequired,
 	} ),
-	taxTerms: PropTypes.arrayOf( PropTypes.shape( {
-		id: PropTypes.string.isRequired,
-		name: PropTypes.string.isRequired,
-		slug: PropTypes.string.isRequired,
-	} ) ),
 	updateTerms: PropTypes.func.isRequired,
 };
 
