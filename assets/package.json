@@ -1,7 +1,7 @@
 {
   "name": "@humanmade/utility-taxonomy",
   "version": "1.0.0",
-  "description": "A hidden taxonomy, used for filtering of posts/pages etc. in a way that is more performant than using the likes of `wp_post_meta`.",
+  "description": "A hidden taxonomy, used for filtering of posts/pages etc. in a way that is more performant than using the likes of post meta.",
   "private": true,
   "scripts": {
     "build": "webpack",
