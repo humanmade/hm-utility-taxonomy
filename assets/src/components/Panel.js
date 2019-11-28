@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { withSelect } from '@wordpress/data';
 import { compose } from '@wordpress/compose';
 import { CheckboxControl, ToggleControl } from '@wordpress/components';
+import { withDispatch, withSelect } from '@wordpress/data';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 
 import panelSelectors from '../data/panel-selectors';
+import panelDispatchers from '../data/panel-dispatchers';
 
 export function Panel( props ) {
 	const {
@@ -89,10 +90,12 @@ Panel.propTypes = {
 		name: PropTypes.string.isRequired,
 		slug: PropTypes.string.isRequired,
 	} ) ),
+	updateTerms: PropTypes.func.isRequired,
 };
 
 const ComposedPanel = compose( [
 	withSelect( panelSelectors ),
+	withDispatch( panelDispatchers ),
 ] )( Panel );
 
 export default ComposedPanel;
