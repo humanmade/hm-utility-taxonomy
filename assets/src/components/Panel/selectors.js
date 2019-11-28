@@ -18,9 +18,8 @@ export default function addSelectors( select, ownProps ) {
 		return defaultProps;
 	}
 
-	const { rest_base: restBase } = taxObject;
 	const termSlugs = options.map( ( { value } ) => value );
-	const taxTerms = getEntityRecords( 'taxonomy', restBase, {
+	const taxTerms = getEntityRecords( 'taxonomy', taxonomy, {
 		slug: termSlugs,
 	} );
 
@@ -47,8 +46,8 @@ export default function addSelectors( select, ownProps ) {
 		finalOptions,
 		taxObject,
 		taxTerms,
-		hasAssignAction: 'wp:action-assign-' + restBase in postLinks,
-		postTerms: getEditedPostAttribute( restBase ),
+		hasAssignAction: 'wp:action-assign-' + taxonomy in postLinks,
+		postTerms: getEditedPostAttribute( taxonomy ),
 	};
 }
 
