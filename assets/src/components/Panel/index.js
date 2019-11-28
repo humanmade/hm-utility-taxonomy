@@ -11,7 +11,6 @@ import addDispatchers from './dispatchers';
 export function Panel( props ) {
 	const {
 		className,
-		default: defaultValue, // TODO.
 		finalOptions,
 		getPostTerms,
 		id,
@@ -50,10 +49,6 @@ Panel.defaultProps = {
 
 Panel.propTypes = {
 	className: PropTypes.string.isRequired,
-	defaultValue: PropTypes.oneOfType( [
-		PropTypes.arrayOf( PropTypes.string ).isRequired,
-		PropTypes.string,
-	] ),
 	id: PropTypes.string.isRequired,
 	multiple: PropTypes.bool,
 	options: PropTypes.arrayOf( PropTypes.shape( {
