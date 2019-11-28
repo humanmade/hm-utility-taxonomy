@@ -44,6 +44,7 @@ function register_tax() : void {
 		$post_types,
 		[
 			'public'       => false,
+			'rest_base'    => TAXONOMY,
 			'rewrite'      => false,
 			'show_in_rest' => true,
 			'labels'       => [
