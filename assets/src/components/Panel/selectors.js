@@ -1,5 +1,4 @@
 const defaultProps = {
-	taxObject: null,
 	finalOptions: [],
 	hasAssignAction: false,
 	postTerms: [],
@@ -9,14 +8,8 @@ const defaultProps = {
 export default function addSelectors( select, ownProps ) {
 	const { options, taxonomy } = ownProps;
 	const { getCurrentPost, getEditedPostAttribute } = select( 'core/editor' );
-	const { getEntityRecords, getTaxonomy } = select( 'core' );
+	const { getEntityRecords } = select( 'core' );
 	const { _links: postLinks } = getCurrentPost();
-	const taxObject = getTaxonomy( taxonomy );
-
-	// Taxonomy object hasn't been fetched yet.
-	if ( ! taxObject ) {
-		return defaultProps;
-	}
 
 	const termSlugs = options.map( ( { value } ) => value );
 	const taxTerms = getEntityRecords( 'taxonomy', taxonomy, {
@@ -44,7 +37,6 @@ export default function addSelectors( select, ownProps ) {
 
 	return {
 		finalOptions,
-		taxObject,
 		taxTerms,
 		hasAssignAction: 'wp:action-assign-' + taxonomy in postLinks,
 		postTerms: getEditedPostAttribute( taxonomy ),

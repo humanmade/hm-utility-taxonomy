@@ -17,8 +17,8 @@ export function Panel( props ) {
 		// multiple, // TODO.
 		options,
 		postTerms,
+		taxonomy,
 		title,
-		taxObject,
 		updateTerms,
 	} = props;
 
@@ -35,7 +35,7 @@ export function Panel( props ) {
 			? postTerms.concat( value )
 			: postTerms.filter( item => item !== value );
 
-		updateTerms( nextPostTerms, taxObject.rest_base );
+		updateTerms( nextPostTerms, taxonomy );
 	};
 
 	return (
@@ -54,7 +54,6 @@ export function Panel( props ) {
 
 Panel.defaultProps = {
 	multiple: true,
-	taxObject: null,
 };
 
 Panel.propTypes = {
@@ -74,11 +73,6 @@ Panel.propTypes = {
 	// Props below are supplied by `addSelectors()`.
 	hasAssignAction: PropTypes.bool.isRequired,
 	postTerms: PropTypes.arrayOf( PropTypes.number ).isRequired,
-	taxObject: PropTypes.shape( {
-		name: PropTypes.string.isRequired,
-		rest_base: PropTypes.string.isRequired,
-		slug: PropTypes.string.isRequired,
-	} ),
 	updateTerms: PropTypes.func.isRequired,
 };
 
