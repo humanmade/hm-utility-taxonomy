@@ -19,7 +19,8 @@ export default function addSelectors( select, ownProps ) {
 		};
 	}
 
-	const finalOptions = taxTerms.map( ( { id, slug } ) => {
+	const finalOptions = taxTerms.map( term => {
+		const { slug } = term;
 		const option = options.find( item => item.value === slug );
 
 		if ( ! option ) {
@@ -27,8 +28,8 @@ export default function addSelectors( select, ownProps ) {
 		}
 
 		return {
-			...option,
-			value: id,
+			...term,
+			label: option.label,
 		};
 
 	} ).filter( Boolean );

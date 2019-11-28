@@ -30,15 +30,14 @@ export function Panel( props ) {
 		? CheckboxControl
 		: ToggleControl;
 
-
 	return (
 		<PluginDocumentSettingPanel className={ className } name={ id } title={ title }>
-			{ finalOptions.map( ( { label, value } ) => (
+			{ finalOptions.map( ( { label, id } ) => (
 				<Control
-					key={ `${ className }-${ id }-${ value }` }
-					checked={ postTerms.indexOf( value ) >= 0 }
+					key={ `${ className }-${ id }-${ id }` }
+					checked={ postTerms.indexOf( id ) >= 0 }
 					label={ label }
-					onChange={ checked => updateTerms( checked, value ) }
+					onChange={ checked => updateTerms( checked, id ) }
 				/>
 			) ) }
 		</PluginDocumentSettingPanel>
