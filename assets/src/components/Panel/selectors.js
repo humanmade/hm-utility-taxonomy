@@ -1,3 +1,11 @@
+const defaultProps = {
+	taxObject: null,
+	finalOptions: [],
+	hasAssignAction: false,
+	postTerms: [],
+	taxTerms: [],
+};
+
 export default function addSelectors( select, ownProps ) {
 	const { options, taxonomy } = ownProps;
 	const { getCurrentPost, getEditedPostAttribute } = select( 'core/editor' );
@@ -7,24 +15,40 @@ export default function addSelectors( select, ownProps ) {
 
 	// Taxonomy object hasn't been fetched yet.
 	if ( ! taxObject ) {
-		return {
-			taxObject,
-			hasAssignAction: false,
-			postTerms: [],
-			taxTerms: [],
-		};
+		return defaultProps;
 	}
 
 	const { rest_base: restBase } = taxObject;
 	const termSlugs = options.map( ( { value } ) => value );
+	const taxTerms = getEntityRecords( 'taxonomy', restBase, {
+		slug: termSlugs,
+	} );
+
+	// Terms haven't been fetched yet, or the taxonomy has no terms.
+	if ( ! taxTerms || ! taxTerms.length ) {
+		return defaultProps;
+	}
+
+	const finalOptions = taxTerms.map( ( { id, slug } ) => {
+		const option = options.find( item => item.value === slug );
+
+		if ( ! option ) {
+			return null;
+		}
+
+		return {
+			...option,
+			value: id,
+		};
+
+	} ).filter( Boolean );
 
 	return {
+		finalOptions,
 		taxObject,
+		taxTerms,
 		hasAssignAction: 'wp:action-assign-' + restBase in postLinks,
 		postTerms: getEditedPostAttribute( restBase ),
-		taxTerms: getEntityRecords( 'taxonomy', restBase, {
-			slug: termSlugs,
-		} ),
 	};
 }
 
