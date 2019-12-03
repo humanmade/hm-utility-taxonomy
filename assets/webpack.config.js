@@ -19,6 +19,7 @@ module.exports = {
 		'@wordpress/dom-ready':  { this: [ 'wp', 'domReady' ] },
 		'@wordpress/edit-post':  { this: [ 'wp', 'editPost' ] },
 		'@wordpress/plugins':    { this: [ 'wp', 'plugins' ] },
+		'@wordpress/url':        { this: [ 'wp', 'url' ] },
 		/* eslint-enable */
 	},
 	module: {
