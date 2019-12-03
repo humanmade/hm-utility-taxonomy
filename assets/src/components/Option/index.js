@@ -4,7 +4,14 @@ import { CheckboxControl, RadioControl, ToggleControl } from '@wordpress/compone
 import withTerm from '../with-term';
 
 export function Option( props ) {
-	const { onChange, selected, term, type, ...rest } = props;
+	const {
+		className,
+		onChange,
+		selected,
+		term,
+		type,
+		...rest
+	} = props;
 
 	if ( ! term ) {
 		return null;
@@ -28,10 +35,15 @@ export function Option( props ) {
 		Component = CheckboxControl;
 	}
 
-	return <Component { ...controlProps } />;
+	return (
+		<div className={ className }>
+			<Component { ...controlProps } />
+		</div>
+	);
 }
 
 Option.propTypes = {
+	className: PropTypes.string.isRequired,
 	onChange: PropTypes.func.isRequired,
 	selected: PropTypes.arrayOf( PropTypes.number ).isRequired,
 	type: PropTypes.oneOf( [
