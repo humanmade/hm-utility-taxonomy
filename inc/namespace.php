@@ -4,7 +4,7 @@ declare( strict_types=1 );
 
 namespace HM\Utility_Taxonomy;
 
-const TAXONOMY  = 'hm-utility';
+const TAXONOMY = 'hm-utility';
 
 /**
  * Bootstrapper
