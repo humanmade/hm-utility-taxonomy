@@ -97,6 +97,7 @@ function enqueue_editor_assets() : void {
 		TAXONOMY,
 		plugin_dir_url( dirname( __FILE__ ) ) . 'assets/dist/main.js',
 		[
+			'wp-api-fetch',
 			'wp-compose',
 			'wp-components',
 			'wp-data',
