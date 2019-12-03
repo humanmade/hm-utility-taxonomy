@@ -104,6 +104,7 @@ function enqueue_editor_assets() : void {
 			'wp-dom-ready',
 			'wp-edit-post',
 			'wp-plugins',
+			'wp-url',
 		],
 		'1.0.0',
 		true
