@@ -5,10 +5,10 @@ import { registerPlugin } from '@wordpress/plugins';
 
 import Panel from './components/Panel';
 
-const { groups, taxonomy } = hmUtilities;
+const { options, taxonomy } = hmUtilities;
 
 domReady( () => {
-	groups.forEach( group => {
+	options.forEach( group => {
 		const { id, icon = null } = group;
 		const pluginId = `${ taxonomy }-${ id }`;
 

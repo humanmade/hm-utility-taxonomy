@@ -62,13 +62,13 @@ function register_tax() : void {
  *
  * @return array Array of utility groups.
  */
-function get_groups( string $post_type ) : array {
+function get_options( string $post_type ) : array {
 	/**
-	 * Allow plugins to add their groups
+	 * Allow plugins to add their options
 	 *
 	 * @param array $group
 	 */
-	$terms = apply_filters( 'hm-utility-groups', [], $post_type );
+	$terms = apply_filters( 'hm-utility-options', [], $post_type );
 
 	return $terms;
 }
@@ -87,9 +87,9 @@ function enqueue_editor_assets() : void {
 		return;
 	}
 
-	$groups = get_groups( $screen->post_type );
+	$options = get_options( $screen->post_type );
 
-	if ( empty( $groups ) ) {
+	if ( empty( $options ) ) {
 		return;
 	}
 
@@ -111,7 +111,7 @@ function enqueue_editor_assets() : void {
 	);
 
 	$data = [
-		'groups'   => $groups,
+		'options'  => $options,
 		'taxonomy' => TAXONOMY,
 	];
 
