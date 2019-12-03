@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { CheckboxControl, RadioControl, ToggleControl } from '@wordpress/components';
+import { CheckboxControl, ToggleControl } from '@wordpress/components';
 
 import withTerm from '../with-term';
 
@@ -18,22 +18,14 @@ export function Option( props ) {
 	}
 
 	const { id, name } = term;
+
+	const Component = type === 'toggle' ? ToggleControl : CheckboxControl;
 	const controlProps = {
 		...rest,
 		checked: selected.indexOf( id ) >= 0,
 		label: name,
 		onChange: checked => onChange( checked, id ),
 	};
-
-	let Component;
-
-	if ( type === 'radio' ) {
-		Component = RadioControl;
-	} else if ( type === 'toggle' ) {
-		Component = ToggleControl;
-	} else {
-		Component = CheckboxControl;
-	}
 
 	return (
 		<div className={ className }>
@@ -48,7 +40,6 @@ Option.propTypes = {
 	selected: PropTypes.arrayOf( PropTypes.number ).isRequired,
 	type: PropTypes.oneOf( [
 		'checkbox',
-		'radio',
 		'toggle',
 	] ).isRequired,
 };

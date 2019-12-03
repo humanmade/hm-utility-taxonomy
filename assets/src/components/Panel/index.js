@@ -14,7 +14,6 @@ export function Panel( props ) {
 		getPostTerms,
 		id,
 		options,
-		// multiple, // TODO.
 		taxonomy,
 		title,
 		updateTerms,
@@ -43,14 +42,9 @@ export function Panel( props ) {
 	);
 }
 
-Panel.defaultProps = {
-	multiple: true,
-};
-
 Panel.propTypes = {
 	className: PropTypes.string.isRequired,
 	id: PropTypes.string.isRequired,
-	multiple: PropTypes.bool,
 	options: PropTypes.arrayOf( PropTypes.shape( {
 		label: PropTypes.string.isRequired,
 		value: PropTypes.string.isRequired,
