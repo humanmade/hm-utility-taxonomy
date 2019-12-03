@@ -1,40 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from '@wordpress/compose';
-import { CheckboxControl, ToggleControl } from '@wordpress/components';
 import { withDispatch, withSelect } from '@wordpress/data';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 
 import addSelectors from './selectors';
 import addDispatchers from './dispatchers';
+import Option from '../Option';
 
 export function Panel( props ) {
 	const {
 		className,
-		finalOptions,
 		getPostTerms,
 		id,
+		options,
 		// multiple, // TODO.
+		taxonomy,
 		title,
 		updateTerms,
 	} = props;
 
-	if ( ! finalOptions.length ) {
-		return null;
-	}
-
 	const postTerms = getPostTerms();
-	const Control = finalOptions.length > 1
-		? CheckboxControl
-		: ToggleControl;
+	const optionProps = {
+		taxonomy,
+		type: options.length > 1 ? 'checkbox' : 'toggle',
+	};
+
 
 	return (
 		<PluginDocumentSettingPanel className={ className } name={ id } title={ title }>
-			{ finalOptions.map( ( { label, id } ) => (
-				<Control
-					key={ `${ className }-${ id }-${ id }` }
+			{ options.map( ( item, index ) => (
+				<Option
+					{ ...item }
+					{ ...optionProps }
 					checked={ postTerms.indexOf( id ) >= 0 }
-					label={ label }
+					key={ `${ className }-${ item.slug }-${ index }` }
 					onChange={ checked => updateTerms( checked, id ) }
 				/>
 			) ) }
