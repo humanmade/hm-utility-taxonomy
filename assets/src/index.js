@@ -11,10 +11,13 @@ domReady( () => {
 	options.forEach( group => {
 		const { id, icon = null } = group;
 		const pluginId = `${ taxonomy }-${ id }`;
+		const className = `${ taxonomy }__${ id }`;
 
 		registerPlugin( pluginId, {
 			icon,
-			render: () => <Panel className={ pluginId } taxonomy={ taxonomy } { ...group } />,
+			render: () => (
+				<Panel className={ className } taxonomy={ taxonomy } { ...group } />
+			),
 		} );
 	} );
 } );

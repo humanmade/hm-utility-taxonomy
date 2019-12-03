@@ -32,8 +32,8 @@ export function Panel( props ) {
 				<Option
 					{ ...item }
 					{ ...optionProps }
-					key={ `${ className }-${ item.slug }-${ index }` }
-					className={ `${ className }-${ item.slug }` }
+					key={ `${ className }-${ item.value }-${ index }` }
+					className={ `${ className }__choice` }
 					onChange={ updateTerms }
 					selected={ postTerms }
 				/>
