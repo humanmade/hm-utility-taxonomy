@@ -12,18 +12,46 @@ export function searchTerms( taxonomy, slug ) {
 	} );
 }
 
+export function createTerm( taxonomy, name, slug ) {
+	return apiFetch( {
+		method: 'POST',
+		path: `/wp/v2/${ taxonomy }`,
+		data: {
+			name,
+			slug,
+		},
+	} );
+}
+
 export default function withTerm() {
 	return WrappedComponent => {
 		function WithTerm( props ) {
-			const { taxonomy, value, ...rest } = props;
+			const { label, taxonomy, value, ...rest } = props;
 			const [ term, setTerm ] = useState( null );
 
 			useEffect( () => {
-				searchTerms( taxonomy, value )
-					.catch( err => { /* TODO */ } )
-					.then( result => {
-						if ( result.length ) {
-							setTerm( result[0] );
+				createTerm( taxonomy, label, value )
+					.catch( error => {
+						if ( error.code === 'term_exists' ) {
+							return searchTerms( taxonomy, value )
+								.then( terms => {
+									if ( terms.length ) {
+										setTerm( terms[0] );
+									}
+								} );
+						}
+
+						return Promise.reject( error );
+					} )
+					.then( newTerm => {
+						if ( newTerm ) {
+							const { id, name, slug } = newTerm;
+
+							setTerm( {
+								id,
+								name,
+								slug,
+							} );
 						}
 					} );
 
