@@ -15,7 +15,6 @@ export function Panel( props ) {
 		getPostTerms,
 		id,
 		// multiple, // TODO.
-		options,
 		title,
 		updateTerms,
 	} = props;
@@ -25,7 +24,7 @@ export function Panel( props ) {
 	}
 
 	const postTerms = getPostTerms();
-	const Control = options.length > 1
+	const Control = finalOptions.length > 1
 		? CheckboxControl
 		: ToggleControl;
 
