@@ -1,5 +1,6 @@
 /* global hmUtilities:false */
 
+import React from 'react';
 import domReady from '@wordpress/dom-ready';
 import { registerPlugin } from '@wordpress/plugins';
 

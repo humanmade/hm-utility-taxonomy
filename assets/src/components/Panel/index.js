@@ -25,7 +25,6 @@ export function Panel( props ) {
 		type: options.length > 1 ? 'checkbox' : 'toggle',
 	};
 
-
 	return (
 		<PluginDocumentSettingPanel className={ className } name={ id } title={ title }>
 			{ options.map( ( item, index ) => (
