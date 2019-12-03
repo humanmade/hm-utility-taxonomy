@@ -4,17 +4,20 @@ import { CheckboxControl, RadioControl, ToggleControl } from '@wordpress/compone
 import withTerm from '../with-term';
 
 export function Option( props ) {
-	const { term, type, ...rest } = props;
+	const { onChange, selected, term, type, ...rest } = props;
 
 	if ( ! term ) {
 		return null;
 	}
 
-	const { name } = term;
+	const { id, name } = term;
 	const controlProps = {
 		...rest,
+		checked: selected.indexOf( id ) >= 0,
 		label: name,
+		onChange: checked => onChange( checked, id ),
 	};
+
 	let Component;
 
 	if ( type === 'radio' ) {
@@ -29,6 +32,8 @@ export function Option( props ) {
 }
 
 Option.propTypes = {
+	onChange: PropTypes.func.isRequired,
+	selected: PropTypes.arrayOf( PropTypes.number ).isRequired,
 	type: PropTypes.oneOf( [
 		'checkbox',
 		'radio',

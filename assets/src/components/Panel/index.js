@@ -33,9 +33,9 @@ export function Panel( props ) {
 				<Option
 					{ ...item }
 					{ ...optionProps }
-					checked={ postTerms.indexOf( id ) >= 0 }
 					key={ `${ className }-${ item.slug }-${ index }` }
-					onChange={ checked => updateTerms( checked, id ) }
+					onChange={ updateTerms }
+					selected={ postTerms }
 				/>
 			) ) }
 		</PluginDocumentSettingPanel>
