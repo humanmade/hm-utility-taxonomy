@@ -66,9 +66,9 @@ function get_options( string $post_type ) : array {
 	/**
 	 * Allow plugins to add their options
 	 *
-	 * @param array $group
+	 * @param array $options Array of all utility options.
 	 */
-	$terms = apply_filters( 'hm-utility-options', [], $post_type );
+	$terms = apply_filters( 'hm_utility_options', [], $post_type );
 
 	return $terms;
 }
