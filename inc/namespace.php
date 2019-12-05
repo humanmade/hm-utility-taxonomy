@@ -22,9 +22,9 @@ function bootstrap() : void {
  * @return array Array of post type names.
  */
 function get_post_types() : array {
-	$post_types = get_post_types_by_support( TAXONOMY );
+	$taxonomy = get_taxonomy( TAXONOMY );
 
-	return $post_types;
+	return $taxonomy->object_type;
 }
 
 /**
