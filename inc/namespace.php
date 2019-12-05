@@ -33,15 +33,9 @@ function get_post_types() : array {
  * TODO: Log error if registration fails.
  */
 function register_tax() : void {
-	$post_types = get_post_types();
-
-	if ( empty( $post_types ) ) {
-		return;
-	}
-
 	register_taxonomy(
 		TAXONOMY,
-		$post_types,
+		[],
 		[
 			'public'       => false,
 			'rest_base'    => TAXONOMY,
