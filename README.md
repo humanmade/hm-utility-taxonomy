@@ -2,43 +2,71 @@
 A hidden taxonomy, used for filtering of posts/pages etc. in a way that is more performant than using the likes of post meta.
 
 ## Usage
-A plugin or theme can add their options by adding support of this feature to the desired post type(s):
+A plugin or theme can add their options by adding the `hm-utility` taxonomy to desired post type(s) and registering the options:
 
 ```php
-add_action( 'registered_post_type', function ( $post_type ) : void {
-	if ( $post_type !== 'page' ) {
-		return;
-	}
+/**
+ * Register custom post type
+ */
+function register_my_post_type() : void {
+	register_post_type(
+		'my-post-type',
+		[
+			// ... other arguments.
+			'taxonomies' => [ 'hm-utility' /* more taxonomies */ ],
+		]
+	);
+}
+add_action( 'init, 'register_my_post_type' );
+```
 
-	add_post_type_support( $post_type, 'hm-utility' );
-} );
+To add support for built-in post types or other post types that you don't have control over their registration, use `hm_utility_init` hook:
+```php
+/**
+ * Add hm-utility taxonomy to `page` post type
+ *
+ * @param string $taxonomy HM Utility's taxonomy name.
+ */
+function my_add_utility_support( string $taxonomy ) : void {
+	register_taxonomy_for_object_type( $taxonomy, 'page' );
+}
+add_action( 'hm_utility_init', 'my_add_utility_support' );
 ```
 
 The options can then be registered via `hm_utility_options`:
 
 ```php
-add_filter( 'hm_utility_options', function ( $data, $post_type ) : array {
+/**
+ * Add utility options for page post type
+ *
+ * @param array  $options   All options.
+ * @param string $post_type Post type name.
+ *
+ * @return array.
+ */
+function my_utility_options( $options, $post_type ) : array {
 	if ( $post_type !== 'page' ) {
-		return $data;
+		return $options;
 	}
 
-	$data[] = [
+	$options[] = [
 		'id'      => 'my-utility-options',
-		'title'   => __( 'Something Extra' ),
+		'title'   => __( 'Something Extra', 'my-textdomain' ),
 		'options' => [
 			[
-				'label' => __( 'Option One' ),
+				'label' => __( 'Option One', 'my-textdomain' ),
 				'value' => 'option-two', // Must be slug-formatted.
 			],
 			[
-				'label' => __( 'Option Two' ),
+				'label' => __( 'Option Two', 'my-textdomain' ),
 				'value' => 'option-two',
 			],
 		],
 	];
 
-	return $data;
-}, 10, 2 );
+	return $options;
+}
+add_filter( 'hm_utility_options', 'my_utility_options', 10, 2 );
 ```
 
 The block editor should now provide a Panel titled "Something Extra" on the Document sidebar that contains a list of checkboxes (or a toggle if there's only one option) based on the options registered above.
