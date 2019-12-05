@@ -12,7 +12,7 @@ const TAXONOMY = 'hm-utility';
  * @return void
  */
 function bootstrap() : void {
-	add_action( 'init', __NAMESPACE__ . '\\register_tax', 11 );
+	add_action( 'init', __NAMESPACE__ . '\\register_tax' );
 	add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_editor_assets' );
 }
 
