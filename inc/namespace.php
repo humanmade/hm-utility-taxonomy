@@ -53,6 +53,13 @@ function register_tax() : void {
 			],
 		]
 	);
+
+	/**
+	 * Fires after the hm-utility taxonomy has been registered.
+	 *
+	 * @param string $taxonomy Taxonomy name.
+	 */
+	do_action( 'hm_utility_init', TAXONOMY );
 }
 
 /**
