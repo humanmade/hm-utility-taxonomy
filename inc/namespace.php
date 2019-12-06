@@ -12,7 +12,7 @@ const TAXONOMY = 'hm-utility';
  * @return void
  */
 function bootstrap() : void {
-	add_action( 'init', __NAMESPACE__ . '\\register_tax', 11 );
+	add_action( 'init', __NAMESPACE__ . '\\register_tax' );
 	add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_editor_assets' );
 }
 
@@ -22,9 +22,9 @@ function bootstrap() : void {
  * @return array Array of post type names.
  */
 function get_post_types() : array {
-	$post_types = get_post_types_by_support( TAXONOMY );
+	$taxonomy = get_taxonomy( TAXONOMY );
 
-	return $post_types;
+	return $taxonomy->object_type;
 }
 
 /**
@@ -33,15 +33,9 @@ function get_post_types() : array {
  * TODO: Log error if registration fails.
  */
 function register_tax() : void {
-	$post_types = get_post_types();
-
-	if ( empty( $post_types ) ) {
-		return;
-	}
-
 	register_taxonomy(
 		TAXONOMY,
-		$post_types,
+		[],
 		[
 			'public'       => false,
 			'rest_base'    => TAXONOMY,
@@ -53,6 +47,13 @@ function register_tax() : void {
 			],
 		]
 	);
+
+	/**
+	 * Fires after the hm-utility taxonomy has been registered.
+	 *
+	 * @param string $taxonomy Taxonomy name.
+	 */
+	do_action( 'hm_utility_init', TAXONOMY );
 }
 
 /**
