@@ -13,24 +13,27 @@ export function Option( props ) {
 		type,
 		...rest
 	} = props;
-
-	if ( ! term ) {
-		return null;
-	}
-
-	const { id, name } = term;
-
 	const Component = type === 'toggle' ? ToggleControl : CheckboxControl;
-	const controlProps = {
-		...rest,
-		checked: selected.indexOf( id ) >= 0,
-		label: name,
-		onChange: checked => onChange( checked, id ),
-	};
+	let controlProps;
+
+	if ( term ) {
+		const { id, name } = term;
+		controlProps = {
+			checked: selected.indexOf( id ) >= 0,
+			label: name,
+			onChange: checked => onChange( checked, id ),
+		};
+	} else {
+		controlProps = {
+			checked: false,
+			disabled: true,
+			label: 'Loading…',
+		};
+	}
 
 	return (
 		<div className={ className }>
-			<Component { ...controlProps } />
+			<Component { ...rest } { ...controlProps } />
 		</div>
 	);
 }
