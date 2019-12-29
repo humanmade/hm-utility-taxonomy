@@ -32,27 +32,29 @@ export default function withTerm() {
 			useEffect( () => {
 				createTerm( taxonomy, label, value )
 					.catch( error => {
-						if ( error.code === 'term_exists' ) {
-							return searchTerms( taxonomy, value )
-								.then( terms => {
-									if ( terms.length ) {
-										setTerm( terms[0] );
-									}
-								} );
+						if ( error.code !== 'term_exists' ) {
+							return Promise.reject( error );
 						}
 
-						return Promise.reject( error );
+						return searchTerms( taxonomy, value )
+							.then( terms => {
+								if ( terms.length ) {
+									setTerm( terms[0] );
+								}
+							} );
 					} )
 					.then( newTerm => {
-						if ( newTerm ) {
-							const { id, name, slug } = newTerm;
-
-							setTerm( {
-								id,
-								name,
-								slug,
-							} );
+						if ( ! newTerm ) {
+							return;
 						}
+
+						const { id, name, slug } = newTerm;
+
+						setTerm( {
+							id,
+							name,
+							slug,
+						} );
 					} );
 
 			}, [ taxonomy, value ] );
