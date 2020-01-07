@@ -40,6 +40,7 @@ export function Option( props ) {
 
 Option.propTypes = {
 	className: PropTypes.string.isRequired,
+	defaults: PropTypes.arrayOf( PropTypes.string ).isRequired,
 	onChange: PropTypes.func.isRequired,
 	selected: PropTypes.arrayOf( PropTypes.number ).isRequired,
 	type: PropTypes.oneOf( [
