@@ -14,6 +14,7 @@ export function Panel( props ) {
 		defaults,
 		getPostTerms,
 		id,
+		isCleanNewPost,
 		options,
 		taxonomy,
 		title,
@@ -35,6 +36,7 @@ export function Panel( props ) {
 					key={ `${ className }-${ item.value }-${ index }` }
 					className={ `${ className }__choice` }
 					defaults={ defaults }
+					isNewPost={ isCleanNewPost() }
 					onChange={ updateTerms }
 					selected={ postTerms }
 				/>
@@ -49,8 +51,9 @@ Panel.defaultProps = {
 
 Panel.propTypes = {
 	className: PropTypes.string.isRequired,
-	id: PropTypes.string.isRequired,
 	defaults: PropTypes.arrayOf( PropTypes.string ),
+	id: PropTypes.string.isRequired,
+	isCleanNewPost: PropTypes.func.isRequired,
 	options: PropTypes.arrayOf( PropTypes.shape( {
 		label: PropTypes.string.isRequired,
 		value: PropTypes.string.isRequired,
