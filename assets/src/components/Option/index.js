@@ -41,6 +41,7 @@ export function Option( props ) {
 Option.propTypes = {
 	className: PropTypes.string.isRequired,
 	defaults: PropTypes.arrayOf( PropTypes.string ).isRequired,
+	isNewPost: PropTypes.bool.isRequired,
 	onChange: PropTypes.func.isRequired,
 	selected: PropTypes.arrayOf( PropTypes.number ).isRequired,
 	type: PropTypes.oneOf( [
