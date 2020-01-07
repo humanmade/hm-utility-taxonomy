@@ -7,6 +7,8 @@ import withTerm from '../with-term';
 export function Option( props ) {
 	const {
 		className,
+		defaults,
+		isNewPost,
 		onChange,
 		selected,
 		term,
@@ -17,9 +19,11 @@ export function Option( props ) {
 	let controlProps;
 
 	if ( term ) {
-		const { id, name } = term;
+		const { id, name, slug } = term;
 		controlProps = {
-			checked: selected.indexOf( id ) >= 0,
+			checked: isNewPost
+				? defaults.indexOf( slug ) >= 0
+				: selected.indexOf( id ) >= 0,
 			label: name,
 			onChange: checked => onChange( checked, id ),
 		};
