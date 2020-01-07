@@ -16,28 +16,28 @@ export function Option( props ) {
 		...rest
 	} = props;
 	const Component = type === 'toggle' ? ToggleControl : CheckboxControl;
-	let controlProps;
 
-	if ( term ) {
-		const { id, name, slug } = term;
-		controlProps = {
-			checked: isNewPost
-				? defaults.indexOf( slug ) >= 0
-				: selected.indexOf( id ) >= 0,
-			label: name,
-			onChange: checked => onChange( checked, id ),
-		};
-	} else {
-		controlProps = {
-			checked: false,
-			disabled: true,
-			label: 'Loading…',
-		};
+	if ( ! term ) {
+		return (
+			<div className={ className }>
+				<Component { ...rest } checked={ false } disabled={ true } label='Loading…' />
+			</div>
+		);
 	}
+
+	const { id, name, slug } = term;
+	const isChecked = isNewPost
+		? defaults.indexOf( slug ) >= 0
+		: selected.indexOf( id ) >= 0;
 
 	return (
 		<div className={ className }>
-			<Component { ...rest } { ...controlProps } />
+			<Component
+				{ ...rest }
+				checked={ isChecked }
+				label={ name }
+				onChange={ checked => onChange( checked, id ) }
+			/>
 		</div>
 	);
 }
