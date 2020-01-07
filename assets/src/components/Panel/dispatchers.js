@@ -13,5 +13,5 @@ export default function addDispatchers( dispatch, ownProps ) {
 
 	return {
 		updateTerms,
-	}
+	};
 }
