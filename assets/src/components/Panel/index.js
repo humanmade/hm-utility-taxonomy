@@ -11,6 +11,7 @@ import Option from '../Option';
 export function Panel( props ) {
 	const {
 		className,
+		defaults,
 		getPostTerms,
 		id,
 		options,
@@ -41,9 +42,14 @@ export function Panel( props ) {
 	);
 }
 
+Panel.defaultProps = {
+	defaults: [],
+};
+
 Panel.propTypes = {
 	className: PropTypes.string.isRequired,
 	id: PropTypes.string.isRequired,
+	defaults: PropTypes.arrayOf( PropTypes.string ),
 	options: PropTypes.arrayOf( PropTypes.shape( {
 		label: PropTypes.string.isRequired,
 		value: PropTypes.string.isRequired,
