@@ -21,9 +21,11 @@ export function Panel( props ) {
 		updateTerms,
 	} = props;
 
-	const postTerms = getPostTerms();
 	const optionProps = {
 		taxonomy,
+		isNewPost: isCleanNewPost(),
+		onChange: updateTerms,
+		selected: isCleanNewPost() ? defaults : getPostTerms(),
 		type: options.length > 1 ? 'checkbox' : 'toggle',
 	};
 
@@ -35,10 +37,6 @@ export function Panel( props ) {
 					{ ...optionProps }
 					key={ `${ className }-${ item.value }-${ index }` }
 					className={ `${ className }__choice` }
-					defaults={ defaults }
-					isNewPost={ isCleanNewPost() }
-					onChange={ updateTerms }
-					selected={ postTerms }
 				/>
 			) ) }
 		</PluginDocumentSettingPanel>
