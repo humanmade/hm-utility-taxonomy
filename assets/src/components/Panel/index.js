@@ -14,7 +14,7 @@ export function Panel( props ) {
 		defaults,
 		getPostTerms,
 		id,
-		isCleanNewPost,
+		isEditedPostNew,
 		options,
 		taxonomy,
 		title,
@@ -23,9 +23,9 @@ export function Panel( props ) {
 
 	const optionProps = {
 		taxonomy,
-		isNewPost: isCleanNewPost(),
+		isNewPost: isEditedPostNew(),
 		onChange: updateTerms,
-		selected: isCleanNewPost() ? defaults : getPostTerms(),
+		selected: isEditedPostNew() ? defaults : getPostTerms(),
 		type: options.length > 1 ? 'checkbox' : 'toggle',
 	};
 
