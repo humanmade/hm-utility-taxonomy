@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { CheckboxControl, ToggleControl } from '@wordpress/components';
 
@@ -7,7 +7,6 @@ import withTerm from '../with-term';
 export function Option( props ) {
 	const {
 		className,
-		defaults,
 		isNewPost,
 		onChange,
 		selected,
@@ -16,27 +15,38 @@ export function Option( props ) {
 		...rest
 	} = props;
 	const Component = type === 'toggle' ? ToggleControl : CheckboxControl;
+	const [ checked, setChecked ] = useState( false );
 
-	if ( ! term ) {
-		return (
-			<div className={ className }>
-				<Component { ...rest } checked={ false } disabled={ true } label='Loading…' />
-			</div>
-		);
-	}
+	// After the term has been fetched, we need to set `checked` again.
+	useEffect( () => {
+		if ( term ) {
+			setChecked(
+				selected.indexOf( term.id ) >= 0 // Using post terms array.
+				|| selected.indexOf( term.slug ) >= 0 // Using `defaults` array.
+			);
+		}
+	}, [ term ] );
 
-	const { id, name, slug } = term;
-	const isChecked = isNewPost
-		? defaults.indexOf( slug ) >= 0
-		: selected.indexOf( id ) >= 0;
+	/*
+	 * Each time the checkbox is clicked, the `checked` state will be updated.
+	 * We need to propagate this change to the editor, but only when the term
+	 * has been fetched and we're editing an existing post, or a new post with
+	 * pending changes.
+	 */
+	useEffect( () => {
+		if ( term && ! isNewPost ) {
+			onChange( checked, term.id );
+		}
+	}, [ checked, term, isNewPost ] );
 
 	return (
 		<div className={ className }>
 			<Component
 				{ ...rest }
-				checked={ isChecked }
-				label={ name }
-				onChange={ checked => onChange( checked, id ) }
+				checked={ checked }
+				disabled={ term ? false : true }
+				label={ term ? term.name : 'Loading…' }
+				onChange={ nextChecked => setChecked( nextChecked ) }
 			/>
 		</div>
 	);
@@ -44,10 +54,12 @@ export function Option( props ) {
 
 Option.propTypes = {
 	className: PropTypes.string.isRequired,
-	defaults: PropTypes.arrayOf( PropTypes.string ).isRequired,
 	isNewPost: PropTypes.bool.isRequired,
 	onChange: PropTypes.func.isRequired,
-	selected: PropTypes.arrayOf( PropTypes.number ).isRequired,
+	selected: PropTypes.arrayOf( PropTypes.oneOfType( [
+		PropTypes.number,
+		PropTypes.string,
+	] ) ).isRequired,
 	type: PropTypes.oneOf( [
 		'checkbox',
 		'toggle',
