@@ -11,17 +11,21 @@ import Option from '../Option';
 export function Panel( props ) {
 	const {
 		className,
+		defaults,
 		getPostTerms,
 		id,
+		isCleanNewPost,
 		options,
 		taxonomy,
 		title,
 		updateTerms,
 	} = props;
 
-	const postTerms = getPostTerms();
 	const optionProps = {
 		taxonomy,
+		isNewPost: isCleanNewPost(),
+		onChange: updateTerms,
+		selected: isCleanNewPost() ? defaults : getPostTerms(),
 		type: options.length > 1 ? 'checkbox' : 'toggle',
 	};
 
@@ -33,17 +37,21 @@ export function Panel( props ) {
 					{ ...optionProps }
 					key={ `${ className }-${ item.value }-${ index }` }
 					className={ `${ className }__choice` }
-					onChange={ updateTerms }
-					selected={ postTerms }
 				/>
 			) ) }
 		</PluginDocumentSettingPanel>
 	);
 }
 
+Panel.defaultProps = {
+	defaults: [],
+};
+
 Panel.propTypes = {
 	className: PropTypes.string.isRequired,
+	defaults: PropTypes.arrayOf( PropTypes.string ),
 	id: PropTypes.string.isRequired,
+	isCleanNewPost: PropTypes.func.isRequired,
 	options: PropTypes.arrayOf( PropTypes.shape( {
 		label: PropTypes.string.isRequired,
 		value: PropTypes.string.isRequired,

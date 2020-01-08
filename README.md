@@ -50,12 +50,15 @@ function my_utility_options( $options, $post_type ) : array {
 	}
 
 	$options[] = [
-		'id'      => 'my-utility-options',
-		'title'   => __( 'Something Extra', 'my-textdomain' ),
-		'options' => [
+		'id'       => 'my-utility-options',
+		'title'    => __( 'Something Extra', 'my-textdomain' ),
+		'defaults' => [ // Optional. This will assign new posts to the terms set here.
+			'option-one',
+		],
+		'options'  => [
 			[
 				'label' => __( 'Option One', 'my-textdomain' ),
-				'value' => 'option-two', // Must be slug-formatted.
+				'value' => 'option-one', // Must be slug-formatted.
 			],
 			[
 				'label' => __( 'Option Two', 'my-textdomain' ),
