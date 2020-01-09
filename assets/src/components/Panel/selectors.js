@@ -1,12 +1,13 @@
 export default function addSelectors( select, ownProps ) {
 	const { taxonomy } = ownProps;
-	const { getCurrentPost, getEditedPostAttribute, isEditedPostNew } = select( 'core/editor' );
+	const { getCurrentPost, getEditedPostAttribute, isEditedPostDirty, isEditedPostNew } = select( 'core/editor' );
 	const { _links: postLinks } = getCurrentPost();
-	const getPostTerms = () => getEditedPostAttribute( taxonomy );
 
 	return {
-		getPostTerms,
+		isPostDirty: isEditedPostDirty(),
+		isPostNew: isEditedPostNew(),
+		getPostTerms: () => getEditedPostAttribute( taxonomy ),
 		hasAssignAction: 'wp:action-assign-' + taxonomy in postLinks,
-		isEditedPostNew,
+		postStatus: getEditedPostAttribute( 'status' ),
 	};
 }
