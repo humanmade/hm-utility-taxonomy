@@ -7,37 +7,64 @@ import withTerm from '../with-term';
 export function Option( props ) {
 	const {
 		className,
-		isNewPost,
+		defaults,
+		isPostDirty,
+		isPostNew,
 		onChange,
 		selected,
 		term,
 		type,
 		...rest
 	} = props;
-	const Component = type === 'toggle' ? ToggleControl : CheckboxControl;
-	const [ checked, setChecked ] = useState( false );
 
-	// After the term has been fetched, we need to set `checked` again.
+	const Component = type === 'toggle' ? ToggleControl : CheckboxControl;
+
+	/*
+	 * This sets the `checked` state, based on the post status (new or existing) and term.
+	 * On new posts, the check is ran against the defaults. Otherwise, it's ran against
+	 * the saved terms.
+	 */
+	const setInitialChecked = () => {
+		if ( ! term ) {
+			return false;
+		}
+
+		const { id, slug } = term;
+
+		return isPostNew
+			? defaults.indexOf( slug ) >= 0
+			: selected.indexOf( id ) >= 0;
+	};
+	const [ checked, setChecked ] = useState( setInitialChecked );
+
+	const update = () => {
+		setChecked( ! checked );
+
+		if ( term ) {
+			onChange( ! checked, term.id );
+		}
+	};
+
+	/*
+	 * After the term has been fetched, we need to set `checked` again.
+	 * This effect should only run once, right after the term is available.
+	 */
 	useEffect( () => {
 		if ( term ) {
-			setChecked(
-				selected.indexOf( term.id ) >= 0 // Using post terms array.
-				|| selected.indexOf( term.slug ) >= 0 // Using `defaults` array.
-			);
+			setChecked( setInitialChecked );
 		}
 	}, [ term ] );
 
 	/*
-	 * Each time the checkbox is clicked, the `checked` state will be updated.
-	 * We need to propagate this change to the editor, but only when the term
-	 * has been fetched and we're editing an existing post, or a new post with
-	 * pending changes.
+	 * This is where we inject our state into the post edits.
+	 * This effect should only run once on a new post, right after it's marked
+	 * as dirty by the editor.
 	 */
 	useEffect( () => {
-		if ( term && ! isNewPost ) {
+		if ( term && isPostNew && isPostDirty ) {
 			onChange( checked, term.id );
 		}
-	}, [ checked, term, isNewPost ] );
+	}, [ checked, term, isPostDirty, isPostNew ] );
 
 	return (
 		<div className={ className }>
@@ -46,7 +73,7 @@ export function Option( props ) {
 				checked={ checked }
 				disabled={ term ? false : true }
 				label={ term ? term.name : 'Loading…' }
-				onChange={ nextChecked => setChecked( nextChecked ) }
+				onChange={ update }
 			/>
 		</div>
 	);
@@ -54,7 +81,8 @@ export function Option( props ) {
 
 Option.propTypes = {
 	className: PropTypes.string.isRequired,
-	isNewPost: PropTypes.bool.isRequired,
+	isPostDirty: PropTypes.bool.isRequired,
+	isPostNew: PropTypes.bool.isRequired,
 	onChange: PropTypes.func.isRequired,
 	selected: PropTypes.arrayOf( PropTypes.oneOfType( [
 		PropTypes.number,

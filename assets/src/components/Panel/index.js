@@ -11,32 +11,25 @@ import Option from '../Option';
 export function Panel( props ) {
 	const {
 		className,
-		defaults,
 		getPostTerms,
 		id,
-		isEditedPostNew,
 		options,
-		taxonomy,
 		title,
 		updateTerms,
+		...rest
 	} = props;
-
-	const optionProps = {
-		taxonomy,
-		isNewPost: isEditedPostNew(),
-		onChange: updateTerms,
-		selected: isEditedPostNew() ? defaults : getPostTerms(),
-		type: options.length > 1 ? 'checkbox' : 'toggle',
-	};
 
 	return (
 		<PluginDocumentSettingPanel className={ className } name={ id } title={ title }>
 			{ options.map( ( item, index ) => (
 				<Option
+					{ ...rest }
 					{ ...item }
-					{ ...optionProps }
 					key={ `${ className }-${ item.value }-${ index }` }
 					className={ `${ className }__choice` }
+					onChange={ updateTerms }
+					selected={ getPostTerms() }
+					type={ options.length > 1 ? 'checkbox' : 'toggle' }
 				/>
 			) ) }
 		</PluginDocumentSettingPanel>
@@ -51,7 +44,6 @@ Panel.propTypes = {
 	className: PropTypes.string.isRequired,
 	defaults: PropTypes.arrayOf( PropTypes.string ),
 	id: PropTypes.string.isRequired,
-	isCleanNewPost: PropTypes.func.isRequired,
 	options: PropTypes.arrayOf( PropTypes.shape( {
 		label: PropTypes.string.isRequired,
 		value: PropTypes.string.isRequired,
@@ -61,6 +53,8 @@ Panel.propTypes = {
 	// Props below are supplied by `addSelectors()`.
 	getPostTerms: PropTypes.func.isRequired,
 	hasAssignAction: PropTypes.bool.isRequired,
+	isPostDirty: PropTypes.bool.isRequired,
+	isPostNew: PropTypes.bool.isRequired,
 	// Props below are supplied by `addDispatchers()`.
 	updateTerms: PropTypes.func.isRequired,
 };
