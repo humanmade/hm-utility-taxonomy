@@ -125,3 +125,26 @@ function enqueue_editor_assets() : void {
 		'before'
 	);
 }
+
+/**
+ * Get raw term from options array
+ *
+ * @since 1.2.0
+ *
+ * @param string $slug    Term slug.
+ * @param array  $options Array of option arrays, each containing 'label' and 'value'.
+ *
+ * @return array|null
+ */
+function get_raw_term_from_options( string $slug, array $options ) : ? array {
+	$result = null;
+
+	foreach ( $options as $option ) {
+		if ( $option['value'] === $slug ) {
+			$result = $option;
+			break;
+		}
+	}
+
+	return $result;
+}
