@@ -16,17 +16,10 @@ export function Option( props ) {
 
 	const Component = type === 'toggle' ? ToggleControl : CheckboxControl;
 
-	/*
-	 * This sets the `checked` state, based on the post status (new or existing) and term.
-	 * On new posts, the check is ran against the defaults. Otherwise, it's ran against
-	 * the saved terms.
-	 */
 	const setInitialChecked = () => {
-		if ( ! term ) {
-			return false;
-		}
-
-		return selected.indexOf( term.id ) >= 0;
+		return term
+			? selected.indexOf( term.id ) >= 0
+			: false;
 	};
 	const [ checked, setChecked ] = useState( setInitialChecked );
 
