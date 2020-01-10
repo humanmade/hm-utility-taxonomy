@@ -169,3 +169,53 @@ function get_or_create_term( array $raw_term ) : array {
 
 	return $term;
 }
+
+/**
+ * Get post's default term IDs
+ *
+ * @since 1.2.0
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array Array of term IDs based on defaults set in options.
+ */
+function get_post_default_term_ids( int $post_id ) : array {
+	$post  = get_post( $post_id );
+	$terms = [];
+
+	if ( ! $post ) {
+		return $terms;
+	}
+
+	if ( ! in_array( $post->post_type, get_post_types(), true ) ) {
+		return $terms;
+	}
+
+	$options = get_options( $post->post_type );
+
+	if ( empty( $options ) ) {
+		return $terms;
+	}
+
+	foreach ( $options as $group ) {
+		if ( empty( $group['defaults'] ) ) {
+			continue;
+		}
+
+		foreach ( $group['defaults'] as $slug ) {
+			$raw_term = get_raw_term_from_options( $slug, $group['options'] );
+
+			if ( ! $raw_term ) {
+				continue;
+			}
+
+			$term = get_or_create_term( $raw_term );
+
+			if ( is_array( $term ) && ! empty( $term['term_id'] ) ) {
+				$terms[] = $term['term_id'];
+			}
+		}
+	}
+
+	return $terms;
+}
