@@ -14,6 +14,7 @@ const TAXONOMY = 'hm-utility';
 function bootstrap() : void {
 	add_action( 'init', __NAMESPACE__ . '\\register_tax' );
 	add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_editor_assets' );
+	add_action( 'save_post', __NAMESPACE__ . '\\set_default_post_terms' );
 }
 
 /**
@@ -218,4 +219,31 @@ function get_post_default_term_ids( int $post_id ) : array {
 	}
 
 	return $terms;
+}
+
+/**
+ * Set default post terms
+ *
+ * @since 1.2.0
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return void
+ */
+function set_default_post_terms( int $post_id ) : void {
+	if ( get_post_status( $post_id ) !== 'auto-draft' ) {
+		return;
+	}
+
+	if ( ! in_array( get_post_type( $post_id ), get_post_types(), true ) ) {
+		return;
+	}
+
+	$term_ids = get_post_default_term_ids( $post_id );
+
+	if ( empty( $term_ids ) ) {
+		return;
+	}
+
+	wp_set_post_terms( $post_id, $term_ids, TAXONOMY, true );
 }
