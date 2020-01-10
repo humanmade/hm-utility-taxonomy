@@ -7,9 +7,6 @@ import withTerm from '../with-term';
 export function Option( props ) {
 	const {
 		className,
-		defaults,
-		isPostDirty,
-		isPostNew,
 		onChange,
 		selected,
 		term,
@@ -29,11 +26,7 @@ export function Option( props ) {
 			return false;
 		}
 
-		const { id, slug } = term;
-
-		return isPostNew
-			? defaults.indexOf( slug ) >= 0
-			: selected.indexOf( id ) >= 0;
+		return selected.indexOf( term.id ) >= 0;
 	};
 	const [ checked, setChecked ] = useState( setInitialChecked );
 
@@ -55,17 +48,6 @@ export function Option( props ) {
 		}
 	}, [ term ] );
 
-	/*
-	 * This is where we inject our state into the post edits.
-	 * This effect should only run once on a new post, right after it's marked
-	 * as dirty by the editor.
-	 */
-	useEffect( () => {
-		if ( term && isPostNew && isPostDirty ) {
-			onChange( checked, term.id );
-		}
-	}, [ checked, term, isPostDirty, isPostNew ] );
-
 	return (
 		<div className={ className }>
 			<Component
@@ -81,8 +63,6 @@ export function Option( props ) {
 
 Option.propTypes = {
 	className: PropTypes.string.isRequired,
-	isPostDirty: PropTypes.bool.isRequired,
-	isPostNew: PropTypes.bool.isRequired,
 	onChange: PropTypes.func.isRequired,
 	selected: PropTypes.arrayOf( PropTypes.oneOfType( [
 		PropTypes.number,
