@@ -9,6 +9,8 @@ const TAXONOMY = 'hm-utility';
 /**
  * Bootstrapper
  *
+ * @since 1.0.0
+ *
  * @return void
  */
 function bootstrap() : void {
@@ -20,6 +22,8 @@ function bootstrap() : void {
 /**
  * Get post types to support
  *
+ * @since 1.0.0
+ *
  * @return array Array of post type names.
  */
 function get_post_types() : array {
@@ -30,6 +34,8 @@ function get_post_types() : array {
 
 /**
  * Register taxonomy
+ *
+ * @since 1.0.0
  *
  * TODO: Log error if registration fails.
  */
@@ -60,6 +66,8 @@ function register_tax() : void {
 /**
  * Get groups
  *
+ * @since 1.0.0
+ *
  * @param string $post_type Post type name.
  *
  * @return array Array of utility groups.
@@ -77,6 +85,10 @@ function get_options( string $post_type ) : array {
 
 /**
  * Enqueue editor assets
+ *
+ * @since 1.0.0
+ *
+ * @return void
  */
 function enqueue_editor_assets() : void {
 	$screen = get_current_screen();
@@ -152,6 +164,8 @@ function get_raw_term_from_options( string $slug, array $options ) : ? array {
 
 /**
  * Get or create term
+ *
+ * @since 1.2.0
  *
  * @param array $raw_term Raw term array, containing 'label' and 'value'.
  *
