@@ -36,13 +36,8 @@ export function Panel( props ) {
 	);
 }
 
-Panel.defaultProps = {
-	defaults: [],
-};
-
 Panel.propTypes = {
 	className: PropTypes.string.isRequired,
-	defaults: PropTypes.arrayOf( PropTypes.string ),
 	id: PropTypes.string.isRequired,
 	options: PropTypes.arrayOf( PropTypes.shape( {
 		label: PropTypes.string.isRequired,
@@ -53,8 +48,6 @@ Panel.propTypes = {
 	// Props below are supplied by `addSelectors()`.
 	getPostTerms: PropTypes.func.isRequired,
 	hasAssignAction: PropTypes.bool.isRequired,
-	isPostDirty: PropTypes.bool.isRequired,
-	isPostNew: PropTypes.bool.isRequired,
 	// Props below are supplied by `addDispatchers()`.
 	updateTerms: PropTypes.func.isRequired,
 };

@@ -9,15 +9,20 @@ const TAXONOMY = 'hm-utility';
 /**
  * Bootstrapper
  *
+ * @since 1.0.0
+ *
  * @return void
  */
 function bootstrap() : void {
 	add_action( 'init', __NAMESPACE__ . '\\register_tax' );
 	add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_editor_assets' );
+	add_action( 'save_post', __NAMESPACE__ . '\\set_default_post_terms' );
 }
 
 /**
  * Get post types to support
+ *
+ * @since 1.0.0
  *
  * @return array Array of post type names.
  */
@@ -29,6 +34,8 @@ function get_post_types() : array {
 
 /**
  * Register taxonomy
+ *
+ * @since 1.0.0
  *
  * TODO: Log error if registration fails.
  */
@@ -59,6 +66,8 @@ function register_tax() : void {
 /**
  * Get groups
  *
+ * @since 1.0.0
+ *
  * @param string $post_type Post type name.
  *
  * @return array Array of utility groups.
@@ -76,6 +85,10 @@ function get_options( string $post_type ) : array {
 
 /**
  * Enqueue editor assets
+ *
+ * @since 1.0.0
+ *
+ * @return void
  */
 function enqueue_editor_assets() : void {
 	$screen = get_current_screen();
@@ -107,7 +120,7 @@ function enqueue_editor_assets() : void {
 			'wp-plugins',
 			'wp-url',
 		],
-		'1.1.1',
+		'1.2.0',
 		true
 	);
 
@@ -124,4 +137,127 @@ function enqueue_editor_assets() : void {
 		),
 		'before'
 	);
+}
+
+/**
+ * Get raw term from options array
+ *
+ * @since 1.2.0
+ *
+ * @param string $slug    Term slug.
+ * @param array  $options Array of option arrays, each containing 'label' and 'value'.
+ *
+ * @return array|null
+ */
+function get_raw_term_from_options( string $slug, array $options ) : ? array {
+	$result = null;
+
+	foreach ( $options as $option ) {
+		if ( $option['value'] === $slug ) {
+			$result = $option;
+			break;
+		}
+	}
+
+	return $result;
+}
+
+/**
+ * Get or create term
+ *
+ * @since 1.2.0
+ *
+ * @param array $raw_term Raw term array, containing 'label' and 'value'.
+ *
+ * @return array
+ */
+function get_or_create_term( array $raw_term ) : array {
+	$term = get_term_by( 'slug', $raw_term['value'], TAXONOMY, ARRAY_A );
+
+	if ( ! empty( $term ) ) {
+		return $term;
+	}
+
+	$term = wp_insert_term( $raw_term['label'], TAXONOMY, [
+		'slug' => $raw_term['slug'],
+	] );
+
+	return $term;
+}
+
+/**
+ * Get post's default term IDs
+ *
+ * @since 1.2.0
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return array Array of term IDs based on defaults set in options.
+ */
+function get_post_default_term_ids( int $post_id ) : array {
+	$post  = get_post( $post_id );
+	$terms = [];
+
+	if ( ! $post ) {
+		return $terms;
+	}
+
+	if ( ! in_array( $post->post_type, get_post_types(), true ) ) {
+		return $terms;
+	}
+
+	$options = get_options( $post->post_type );
+
+	if ( empty( $options ) ) {
+		return $terms;
+	}
+
+	foreach ( $options as $group ) {
+		if ( empty( $group['defaults'] ) ) {
+			continue;
+		}
+
+		foreach ( $group['defaults'] as $slug ) {
+			$raw_term = get_raw_term_from_options( $slug, $group['options'] );
+
+			if ( ! $raw_term ) {
+				continue;
+			}
+
+			$term = get_or_create_term( $raw_term );
+
+			if ( is_array( $term ) && ! empty( $term['term_id'] ) ) {
+				$terms[] = $term['term_id'];
+			}
+		}
+	}
+
+	return $terms;
+}
+
+/**
+ * Set default post terms
+ *
+ * @since 1.2.0
+ *
+ * @param int $post_id Post ID.
+ *
+ * @return void
+ */
+function set_default_post_terms( int $post_id ) : void {
+	if ( get_post_status( $post_id ) !== 'auto-draft' ) {
+		return;
+	}
+
+	if ( ! in_array( get_post_type( $post_id ), get_post_types(), true ) ) {
+		return;
+	}
+
+	$term_ids = get_post_default_term_ids( $post_id );
+
+	if ( empty( $term_ids ) ) {
+		return;
+	}
+
+	wp_set_post_terms( $post_id, $term_ids, TAXONOMY, true );
 }
