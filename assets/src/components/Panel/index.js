@@ -14,20 +14,20 @@ export function Panel( props ) {
 		getPostTerms,
 		id,
 		options,
+		taxonomy,
 		title,
 		updateTerms,
-		...rest
 	} = props;
 
 	return (
 		<PluginDocumentSettingPanel className={ className } name={ id } title={ title }>
 			{ options.map( ( item, index ) => (
 				<Option
-					{ ...rest }
 					{ ...item }
 					key={ `${ className }-${ item.value }-${ index }` }
 					className={ `${ className }__choice` }
 					onChange={ updateTerms }
+					taxonomy={ taxonomy }
 					selected={ getPostTerms() }
 					type={ options.length > 1 ? 'checkbox' : 'toggle' }
 				/>
