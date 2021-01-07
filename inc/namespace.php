@@ -120,7 +120,7 @@ function enqueue_editor_assets() : void {
 			'wp-plugins',
 			'wp-url',
 		],
-		'1.2.0',
+		'1.3.0',
 		true
 	);
 
