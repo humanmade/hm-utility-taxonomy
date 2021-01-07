@@ -12,7 +12,7 @@
   "license": "GPL-2.0-or-later",
   "devDependencies": {
     "@humanmade/eslint-config": "^1.1.1",
-    "@wordpress/babel-preset-default": "^4.7.0",
+    "@wordpress/babel-preset-default": "^4.20.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^5.16.0",
     "eslint-config-react-app": "^3.0.8",
