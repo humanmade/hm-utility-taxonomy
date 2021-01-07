@@ -1,3 +1,6 @@
 {
-    "extends": "@humanmade"
+    "extends": "@humanmade",
+    "rules": {
+        "jsdoc/require-jsdoc": "off"
+    }
 }
