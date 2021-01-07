@@ -1,4 +1,7 @@
 <?php
+/**
+ * HM Utility Taxonomy main entrypoint
+ */
 
 declare( strict_types=1 );
 
