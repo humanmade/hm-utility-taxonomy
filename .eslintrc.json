@@ -1,6 +1,13 @@
 {
     "extends": "@humanmade",
     "rules": {
+        "comma-dangle": "off",
+        "object-curly-newline": [
+            "error",
+            {
+                "consistent": true
+            }
+        ],
         "jsdoc/require-jsdoc": "off"
     }
 }
