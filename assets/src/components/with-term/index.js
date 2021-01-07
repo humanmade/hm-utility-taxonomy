@@ -58,7 +58,7 @@ export default function withTerm() {
 						} );
 					} );
 
-			}, [ taxonomy, value ] );
+			}, [ label, taxonomy, value ] );
 
 			return <WrappedComponent term={ term } { ...rest } />;
 		}

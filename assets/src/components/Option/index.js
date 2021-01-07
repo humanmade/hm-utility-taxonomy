@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { CheckboxControl, ToggleControl } from '@wordpress/components';
 
@@ -17,11 +17,11 @@ export function Option( props ) {
 
 	const Component = type === 'toggle' ? ToggleControl : CheckboxControl;
 
-	const setInitialChecked = () => {
+	const setInitialChecked = useCallback( () => {
 		return term
 			? selected.indexOf( term.id ) >= 0
 			: false;
-	};
+	}, [ selected, term ] );
 	const [ checked, setChecked ] = useState( setInitialChecked );
 
 	const update = () => {
@@ -40,7 +40,7 @@ export function Option( props ) {
 		if ( term ) {
 			setChecked( setInitialChecked );
 		}
-	}, [ term ] );
+	}, [ setInitialChecked, term ] );
 
 	return (
 		<div className={ className }>
