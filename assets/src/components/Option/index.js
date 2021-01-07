@@ -6,21 +6,12 @@ import { CheckboxControl, ToggleControl } from '@wordpress/components';
 import withTerm from '../with-term';
 
 export function Option( props ) {
-	const {
-		className,
-		onChange,
-		selected,
-		term,
-		type,
-		...rest
-	} = props;
+	const { className, onChange, selected, term, type, ...rest } = props;
 
 	const Component = type === 'toggle' ? ToggleControl : CheckboxControl;
 
 	const setInitialChecked = useCallback( () => {
-		return term
-			? selected.indexOf( term.id ) >= 0
-			: false;
+		return term ? selected.indexOf( term.id ) >= 0 : false;
 	}, [ selected, term ] );
 	const [ checked, setChecked ] = useState( setInitialChecked );
 
@@ -58,14 +49,8 @@ export function Option( props ) {
 Option.propTypes = {
 	className: PropTypes.string.isRequired,
 	onChange: PropTypes.func.isRequired,
-	selected: PropTypes.arrayOf( PropTypes.oneOfType( [
-		PropTypes.number,
-		PropTypes.string,
-	] ) ).isRequired,
-	type: PropTypes.oneOf( [
-		'checkbox',
-		'toggle',
-	] ).isRequired,
+	selected: PropTypes.arrayOf( PropTypes.oneOfType( [ PropTypes.number, PropTypes.string ] ) ).isRequired,
+	type: PropTypes.oneOf( [ 'checkbox', 'toggle' ] ).isRequired,
 };
 
 const OptionWithTerm = withTerm()( Option );

@@ -37,12 +37,11 @@ export default function withTerm() {
 							return Promise.reject( error );
 						}
 
-						return searchTerms( taxonomy, value )
-							.then( terms => {
-								if ( terms.length ) {
-									setTerm( terms[0] );
-								}
-							} );
+						return searchTerms( taxonomy, value ).then( terms => {
+							if ( terms.length ) {
+								setTerm( terms[ 0 ] );
+							}
+						} );
 					} )
 					.then( newTerm => {
 						if ( ! newTerm ) {
@@ -57,7 +56,6 @@ export default function withTerm() {
 							slug,
 						} );
 					} );
-
 			}, [ label, taxonomy, value ] );
 
 			return <WrappedComponent term={ term } { ...rest } />;

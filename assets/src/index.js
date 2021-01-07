@@ -17,10 +17,7 @@ domReady( () => {
 
 		registerPlugin( pluginId, {
 			icon,
-			render: () => (
-				<Panel className={ className } taxonomy={ taxonomy } { ...group } />
-			),
+			render: () => <Panel className={ className } taxonomy={ taxonomy } { ...group } />,
 		} );
 	} );
 } );
-

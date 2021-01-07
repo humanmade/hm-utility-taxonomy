@@ -4,9 +4,7 @@ export default function addDispatchers( dispatch, ownProps ) {
 	const postTerms = getPostTerms();
 
 	const updateTerms = ( checked, termId ) => {
-		const nextPostTerms = checked
-			? postTerms.concat( termId )
-			: postTerms.filter( item => item !== termId );
+		const nextPostTerms = checked ? postTerms.concat( termId ) : postTerms.filter( item => item !== termId );
 
 		editPost( { [ taxonomy ]: nextPostTerms } );
 	};
