@@ -1,12 +1,14 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+
 import { compose } from '@wordpress/compose';
 import { withDispatch, withSelect } from '@wordpress/data';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 
-import addSelectors from './selectors';
-import addDispatchers from './dispatchers';
 import Option from '../Option';
+
+import addDispatchers from './dispatchers';
+import addSelectors from './selectors';
 
 export function Panel( props ) {
 	const {
@@ -26,10 +28,10 @@ export function Panel( props ) {
 					{ ...item }
 					key={ `${ className }-${ item.value }-${ index }` }
 					className={ `${ className }__choice` }
-					onChange={ updateTerms }
-					taxonomy={ taxonomy }
 					selected={ getPostTerms() }
+					taxonomy={ taxonomy }
 					type={ options.length > 1 ? 'checkbox' : 'toggle' }
+					onChange={ updateTerms }
 				/>
 			) ) }
 		</PluginDocumentSettingPanel>

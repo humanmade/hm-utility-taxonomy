@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+
 import { CheckboxControl, ToggleControl } from '@wordpress/components';
 
 import withTerm from '../with-term';
