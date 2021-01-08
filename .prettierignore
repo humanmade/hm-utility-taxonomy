@@ -1,0 +1,4 @@
+**/*.php
+assets/dist/**
+node_modules/**
+vendor/**

@@ -2,11 +2,11 @@ const path = require( 'path' );
 
 module.exports = {
 	mode: 'production',
-	entry: './src/index.js',
+	entry: './assets/src/index.js',
 	output: {
 		filename: 'main.js',
 		libraryTarget: 'this',
-		path: path.resolve( __dirname, 'dist' ),
+		path: path.resolve( __dirname, 'assets/dist' ),
 	},
 	externals: {
 		/* eslint-disable key-spacing */

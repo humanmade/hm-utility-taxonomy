@@ -1,6 +1,7 @@
 /* global hmUtilities:false */
 
 import React from 'react';
+
 import domReady from '@wordpress/dom-ready';
 import { registerPlugin } from '@wordpress/plugins';
 
@@ -16,10 +17,7 @@ domReady( () => {
 
 		registerPlugin( pluginId, {
 			icon,
-			render: () => (
-				<Panel className={ className } taxonomy={ taxonomy } { ...group } />
-			),
+			render: () => <Panel className={ className } taxonomy={ taxonomy } { ...group } />,
 		} );
 	} );
 } );
-

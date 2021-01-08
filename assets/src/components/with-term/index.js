@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
+
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 
@@ -36,12 +37,11 @@ export default function withTerm() {
 							return Promise.reject( error );
 						}
 
-						return searchTerms( taxonomy, value )
-							.then( terms => {
-								if ( terms.length ) {
-									setTerm( terms[0] );
-								}
-							} );
+						return searchTerms( taxonomy, value ).then( terms => {
+							if ( terms.length ) {
+								setTerm( terms[ 0 ] );
+							}
+						} );
 					} )
 					.then( newTerm => {
 						if ( ! newTerm ) {
@@ -56,8 +56,7 @@ export default function withTerm() {
 							slug,
 						} );
 					} );
-
-			}, [ taxonomy, value ] );
+			}, [ label, taxonomy, value ] );
 
 			return <WrappedComponent term={ term } { ...rest } />;
 		}
@@ -68,5 +67,5 @@ export default function withTerm() {
 		};
 
 		return WithTerm;
-	}
+	};
 }
