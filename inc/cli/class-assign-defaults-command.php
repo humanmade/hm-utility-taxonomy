@@ -63,15 +63,16 @@ class Assign_Defaults_Command {
 	/**
 	 * Get query
 	 *
+	 * @param array $args Array of query arguments to pass to WP_Query.
+	 *
 	 * @return WP_Query
 	 */
-	protected function get_query() : WP_Query {
-		$query_args = [
+	protected function get_query( array $args ) : WP_Query {
+		$query_args = wp_parse_args( $args, [
 			'paged'          => $this->paged,
 			'post_status'    => 'publish',
-			'post_type'      => 'post',
 			'posts_per_page' => $this->posts_per_page,
-		];
+		] );
 
 		$query = new WP_Query( $query_args );
 
@@ -128,8 +129,6 @@ class Assign_Defaults_Command {
 			$this->is_dry_running = true;
 		}
 
-		unset( $args_assoc['dry-run'] );
-
 		$query_args = [];
 
 		if ( isset( $args_assoc['post_type'] ) ) {
@@ -143,7 +142,7 @@ class Assign_Defaults_Command {
 			WP_CLI::error( 'The specified post types are not supported by Utility Taxonomy.' );
 		}
 
-		$query             = $this->get_query();
+		$query             = $this->get_query( $query_args );
 		$this->found_posts = absint( $query->found_posts );
 		$this->max_pages   = $query->max_num_pages;
 
@@ -163,7 +162,7 @@ class Assign_Defaults_Command {
 
 		do {
 			if ( $query->query_vars['paged'] !== $this->paged ) {
-				$query = $this->get_query();
+				$query = $this->get_query( $query_args );
 			}
 
 			array_walk( $query->posts, [ $this, 'process' ] );
