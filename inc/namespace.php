@@ -169,6 +169,7 @@ function get_raw_term_from_options( string $slug, array $options ) : ? array {
  * Get or create term
  *
  * @since 1.2.0
+ * @since 1.3.1 Fixed term creation.
  *
  * @param array $raw_term Raw term array, containing 'label' and 'value'.
  *
@@ -182,7 +183,7 @@ function get_or_create_term( array $raw_term ) : array {
 	}
 
 	$term = wp_insert_term( $raw_term['label'], TAXONOMY, [
-		'slug' => $raw_term['slug'],
+		'slug' => $raw_term['value'],
 	] );
 
 	return $term;
