@@ -103,6 +103,9 @@ class Assign_Defaults_Command {
 	 * [--dry-run]
 	 * : Run the entire operation and show report, but don't save changes to the database.
 	 *
+	 * [--post_type=<post_types>]
+     * : Limit post search to specific post types, separated by comma.
+	 *
 	 * ## EXAMPLES
 	 *
 	 * wp hm-utility-taxonomy assign-defaults --dry-run
@@ -118,7 +121,6 @@ class Assign_Defaults_Command {
 
 		if ( empty( $supported_post_types ) ) {
 			WP_CLI::error( 'No supported post types found.' );
-			return;
 		}
 
 		// Indicate that we're dry-running, and not actually updating.
@@ -127,6 +129,19 @@ class Assign_Defaults_Command {
 		}
 
 		unset( $args_assoc['dry-run'] );
+
+		$query_args = [];
+
+		if ( isset( $args_assoc['post_type'] ) ) {
+			$query_args['post_type'] = explode( ',', $args_assoc['post_type'] );
+			$query_args['post_type'] = array_intersect( $query_args['post_type'], $supported_post_types );
+		} else {
+			$query_args['post_type'] = $supported_post_types;
+		}
+
+		if ( empty( $query_args['post_type'] ) ) {
+			WP_CLI::error( 'The specified post types are not supported by Utility Taxonomy.' );
+		}
 
 		$query             = $this->get_query();
 		$this->found_posts = absint( $query->found_posts );
