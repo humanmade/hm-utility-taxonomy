@@ -17,6 +17,8 @@ const TAXONOMY = 'hm-utility';
  * @return void
  */
 function bootstrap() : void {
+	CLI\bootstrap();
+
 	add_action( 'init', __NAMESPACE__ . '\\register_tax' );
 	add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_editor_assets' );
 	add_action( 'save_post', __NAMESPACE__ . '\\set_default_post_terms' );

@@ -10,6 +10,7 @@
 
 namespace HM\Utility_Taxonomy;
 
+require_once __DIR__ . '/inc/cli/namespace.php';
 require_once __DIR__ . '/inc/namespace.php';
 
 bootstrap();
