@@ -112,8 +112,14 @@ class Assign_Defaults_Command {
 	 *
 	 * ## EXAMPLES
 	 *
-	 * wp hm-utility-taxonomy assign-defaults --dry-run
-	 * wp hm-utility-taxonomy assign-defaults
+	 *     # Dry run
+	 *     $ wp hm-utility-taxonomy assign-defaults --dry-run
+	 *
+	 *     # Limit operation to pages only
+	 *     $ wp hm-utility-taxonomy assign-defaults --post_type=page
+	 *
+	 *     # Limit operation to draft posts & pages only
+	 *     $ wp hm-utility-taxonomy assign-defaults --post_type=page,post --post_status=draft
 	 *
 	 * @param array $args       Positional arguments passed to the command.
 	 * @param array $args_assoc Associative arguments passed to the command.
