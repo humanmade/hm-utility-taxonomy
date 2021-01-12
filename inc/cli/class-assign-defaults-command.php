@@ -104,8 +104,11 @@ class Assign_Defaults_Command {
 	 * [--dry-run]
 	 * : Run the entire operation and show report, but don't save changes to the database.
 	 *
+	 * [--post_status=<post_statuses>]
+	 * : Limit post search to specific post statuses, separated by comma. Defaults to 'publish'.
+	 *
 	 * [--post_type=<post_types>]
-     * : Limit post search to specific post types, separated by comma.
+	 * : Limit post search to specific post types, separated by comma.
 	 *
 	 * ## EXAMPLES
 	 *
@@ -140,6 +143,10 @@ class Assign_Defaults_Command {
 
 		if ( empty( $query_args['post_type'] ) ) {
 			WP_CLI::error( 'The specified post types are not supported by Utility Taxonomy.' );
+		}
+
+		if ( ! empty( $args_assoc['post_status'] ) ) {
+			$query_args['post_status'] = explode( ',', $args_assoc['post_status'] );
 		}
 
 		$query             = $this->get_query( $query_args );
