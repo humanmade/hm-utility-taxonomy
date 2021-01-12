@@ -7,6 +7,7 @@ declare( strict_types=1 );
 
 namespace HM\Utility_Taxonomy\CLI;
 
+use const HM\Utility_Taxonomy\TAXONOMY;
 use WP_CLI;
 use WP_Post;
 use WP_Query;
@@ -78,6 +79,21 @@ class Assign_Defaults_Command {
 	}
 
 	/**
+	 * Get supported post types
+	 *
+	 * @return array|null Array of supported post type names. NULL otherwise.
+	 */
+	protected function get_supported_post_types() :? array {
+		$taxonomy = get_taxonomy( TAXONOMY );
+
+		if ( ! $taxonomy ) {
+			return null;
+		}
+
+		return $taxonomy->object_type;
+	}
+
+	/**
 	 * Assign default terms to existing posts
 	 *
 	 * This assign default terms from the utility taxonomy to published posts.
@@ -98,10 +114,19 @@ class Assign_Defaults_Command {
 	 * @return void
 	 */
 	public function __invoke( array $args, array $args_assoc ) : void {
+		$supported_post_types = $this->get_supported_post_types();
+
+		if ( empty( $supported_post_types ) ) {
+			WP_CLI::error( 'No supported post types found.' );
+			return;
+		}
+
 		// Indicate that we're dry-running, and not actually updating.
 		if ( isset( $args_assoc['dry-run'] ) && (bool) $args_assoc['dry-run'] === true ) {
 			$this->is_dry_running = true;
 		}
+
+		unset( $args_assoc['dry-run'] );
 
 		$query             = $this->get_query();
 		$this->found_posts = absint( $query->found_posts );
