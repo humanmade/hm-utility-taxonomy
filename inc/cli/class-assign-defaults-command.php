@@ -14,10 +14,14 @@ use WP_Query;
 
 /**
  * Assign default terms
+ *
+ * @since 1.4.0
  */
 class Assign_Defaults_Command {
 	/**
 	 * Number of found posts
+	 *
+	 * @since 1.4.0
 	 *
 	 * @var int
 	 */
@@ -26,12 +30,16 @@ class Assign_Defaults_Command {
 	/**
 	 * Maximum number of pages
 	 *
+	 * @since 1.4.0
+	 *
 	 * @var int
 	 */
 	protected $max_pages = 0;
 
 	/**
 	 * Current paged number
+	 *
+	 * @since 1.4.0
 	 *
 	 * @var int
 	 */
@@ -40,6 +48,8 @@ class Assign_Defaults_Command {
 	/**
 	 * Default posts per page
 	 *
+	 * @since 1.4.0
+	 *
 	 * @var int
 	 */
 	protected $posts_per_page = 100;
@@ -47,12 +57,16 @@ class Assign_Defaults_Command {
 	/**
 	 * Used to check whether we're dry-running or not
 	 *
+	 * @since 1.4.0
+	 *
 	 * @var bool
 	 */
 	protected $is_dry_running = false;
 
 	/**
 	 * Map term IDs to term names
+	 *
+	 * @since 1.4.0
 	 *
 	 * @param array $term_ids Array of term IDs.
 	 *
@@ -66,6 +80,8 @@ class Assign_Defaults_Command {
 
 	/**
 	 * Process post
+	 *
+	 * @since 1.4.0
 	 *
 	 * @param WP_Post $post Post object.
 	 *
@@ -95,6 +111,8 @@ class Assign_Defaults_Command {
 	/**
 	 * Get query
 	 *
+	 * @since 1.4.0
+	 *
 	 * @param array $args Array of query arguments to pass to WP_Query.
 	 *
 	 * @return WP_Query
@@ -113,6 +131,8 @@ class Assign_Defaults_Command {
 
 	/**
 	 * Get supported post types
+	 *
+	 * @since 1.4.0
 	 *
 	 * @return array|null Array of supported post type names. NULL otherwise.
 	 */
@@ -152,6 +172,8 @@ class Assign_Defaults_Command {
 	 *
 	 *     # Limit operation to draft posts & pages only
 	 *     $ wp hm-utility-taxonomy assign-defaults --post_type=page,post --post_status=draft
+	 *
+	 * @since 1.4.0
 	 *
 	 * @param array $args       Positional arguments passed to the command.
 	 * @param array $args_assoc Associative arguments passed to the command.

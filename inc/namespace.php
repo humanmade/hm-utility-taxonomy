@@ -13,6 +13,7 @@ const TAXONOMY = 'hm-utility';
  * Bootstrapper
  *
  * @since 1.0.0
+ * @since 1.4.0 Bootstrap CLI.
  *
  * @return void
  */

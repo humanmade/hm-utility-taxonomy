@@ -12,6 +12,8 @@ use WP_CLI;
 /**
  * CLI bootstrapper
  *
+ * @since 1.4.0
+ *
  * @return void
  */
 function bootstrap(): void {
@@ -26,6 +28,8 @@ function bootstrap(): void {
 
 /**
  * Register CLI commands
+ *
+ * @since 1.4.0
  *
  * @return void
  */
