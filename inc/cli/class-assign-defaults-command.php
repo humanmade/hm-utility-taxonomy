@@ -87,7 +87,7 @@ class Assign_Defaults_Command {
 	 *
 	 * @return void
 	 */
-	protected function process( WP_Post $post ) {
+	protected function process( WP_Post $post ) : void {
 		$term_ids = HMUT\get_post_default_term_ids( $post->ID );
 
 		if ( empty( $term_ids ) ) {
