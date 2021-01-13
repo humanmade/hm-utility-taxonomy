@@ -3,7 +3,9 @@
 	<description>PHPCS rules for HM Utility Taxonomy</description>
 
 	<!-- Use HM Coding Standards -->
-	<rule ref="vendor/humanmade/coding-standards" />
+	<rule ref="vendor/humanmade/coding-standards">
+		<exclude name="HM.Files.NamespaceDirectoryName.NameMismatch" />
+	</rule>
 
 	<arg name="extensions" value="php" />
 

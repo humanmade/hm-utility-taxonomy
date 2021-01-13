@@ -13,10 +13,13 @@ const TAXONOMY = 'hm-utility';
  * Bootstrapper
  *
  * @since 1.0.0
+ * @since 1.4.0 Bootstrap CLI.
  *
  * @return void
  */
 function bootstrap() : void {
+	CLI\bootstrap();
+
 	add_action( 'init', __NAMESPACE__ . '\\register_tax' );
 	add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_editor_assets' );
 	add_action( 'save_post', __NAMESPACE__ . '\\set_default_post_terms' );
@@ -123,7 +126,7 @@ function enqueue_editor_assets() : void {
 			'wp-plugins',
 			'wp-url',
 		],
-		'1.3.0',
+		'1.4.0',
 		true
 	);
 
