@@ -7,7 +7,7 @@ declare( strict_types=1 );
 
 namespace HM\Utility_Taxonomy\CLI;
 
-use const HM\Utility_Taxonomy\TAXONOMY;
+use HM\Utility_Taxonomy as HMUT;
 use WP_CLI;
 use WP_Post;
 use WP_Query;
@@ -52,13 +52,45 @@ class Assign_Defaults_Command {
 	protected $is_dry_running = false;
 
 	/**
+	 * Map term IDs to term names
+	 *
+	 * @param array $term_ids Array of term IDs.
+	 *
+	 * @return array
+	 */
+	protected function term_ids_to_names( array $term_ids ) : array {
+		return array_map( function ( int $id ) : string {
+			return get_term( $id, HMUT\TAXONOMY )->name;
+		}, $term_ids );
+	}
+
+	/**
 	 * Process post
 	 *
 	 * @param WP_Post $post Post object.
 	 *
 	 * @return void
 	 */
-	protected function process( WP_Post $post ) {}
+	protected function process( WP_Post $post ) {
+		$term_ids = HMUT\get_post_default_term_ids( $post->ID );
+
+		if ( empty( $term_ids ) ) {
+			WP_CLI::log( sprintf( 'No default terms found for %d.', $post->ID ) );
+			return;
+		}
+
+		if ( ! $this->is_dry_running ) {
+			wp_set_post_terms( $post->ID, $term_ids, HMUT\TAXONOMY, true );
+		}
+
+		WP_CLI::log(
+			sprintf(
+				'Setting default terms of post %d: %s.',
+				$post->ID,
+				join( ', ', $this->term_ids_to_names( $term_ids ) )
+			)
+		);
+	}
 
 	/**
 	 * Get query
@@ -85,7 +117,7 @@ class Assign_Defaults_Command {
 	 * @return array|null Array of supported post type names. NULL otherwise.
 	 */
 	protected function get_supported_post_types() :? array {
-		$taxonomy = get_taxonomy( TAXONOMY );
+		$taxonomy = get_taxonomy( HMUT\TAXONOMY );
 
 		if ( ! $taxonomy ) {
 			return null;
