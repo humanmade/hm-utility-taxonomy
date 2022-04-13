@@ -32,9 +32,10 @@ export default function withTerm() {
 
 			useEffect( () => {
 				createTerm( taxonomy, label, value )
-					.catch( error => {
+					.catch( async response => {
+						const error = await response.json();
 						if ( error.code !== 'term_exists' ) {
-							return Promise.reject( error );
+							return Promise.reject( response );
 						}
 
 						return searchTerms( taxonomy, value ).then( terms => {
