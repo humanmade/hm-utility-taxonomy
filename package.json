@@ -1,6 +1,6 @@
 {
   "name": "@humanmade/utility-taxonomy",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A hidden taxonomy, used for filtering of posts/pages etc. in a way that is more performant than using the likes of post meta.",
   "private": true,
   "scripts": {
@@ -14,6 +14,7 @@
     "@humanmade/eslint-config": "^1.1.1",
     "@wordpress/babel-preset-default": "^4.20.0",
     "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.5",
     "eslint": "^5.16.0",
     "eslint-config-react-app": "^3.0.8",
     "eslint-plugin-flowtype": "^3.13.0",
@@ -27,5 +28,6 @@
     "prop-types": "^15.7.2",
     "webpack": "^5.13.0",
     "webpack-cli": "^4.3.1"
-  }
+  },
+  "dependencies": {}
 }
