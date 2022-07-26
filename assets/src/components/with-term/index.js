@@ -6,6 +6,7 @@ import { addQueryArgs } from '@wordpress/url';
 
 export function searchTerms( taxonomy, slug ) {
 	return apiFetch( {
+		parse: true,
 		path: addQueryArgs( `/wp/v2/${ taxonomy }`, {
 			slug,
 			_fields: 'id,name,slug',
@@ -16,6 +17,7 @@ export function searchTerms( taxonomy, slug ) {
 export function createTerm( taxonomy, name, slug ) {
 	return apiFetch( {
 		method: 'POST',
+		parse: true,
 		path: `/wp/v2/${ taxonomy }`,
 		data: {
 			name,
@@ -32,10 +34,9 @@ export default function withTerm() {
 
 			useEffect( () => {
 				createTerm( taxonomy, label, value )
-					.catch( async response => {
-						const error = await response.json();
+					.catch( error => {
 						if ( error.code !== 'term_exists' ) {
-							return Promise.reject( response );
+							return Promise.reject( error );
 						}
 
 						return searchTerms( taxonomy, value ).then( terms => {
