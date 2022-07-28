@@ -10,7 +10,8 @@
     "build": "webpack",
     "dev": "webpack --mode=development --watch",
     "lint": "eslint .",
-    "changeset": "changeset"
+    "changeset": "changeset",
+    "prettier": "prettier --check ."
   },
   "author": "Human Made",
   "license": "GPL-2.0-or-later",
