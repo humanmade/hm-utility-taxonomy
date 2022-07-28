@@ -91,46 +91,8 @@ Pass `--help` to the command to see available options.
 
 ## Release Process
 
-After one or more PRs has merged to `main`, create a new release branch and follow these steps to tag a release.
+When working on a bug fix or a new feature, a changeset should be added by running `npm run changeset`. Make sure to select the approriate type of change (`patch`, `minor`, or `major`) and commit the created changeset file then issue a pull request to `main`.
 
-Note that this process assumes you [have `nvm` installed](https://github.com/nvm-sh/nvm).
+A GitHub action will run whevener the `main` branch is updated. When new changeset files are detected, it will issue a release pull request containing the latest changes, compiled in `CHANGELOG.md`. If such PR already exists from previous merges to `main`, it will be updated.
 
-Before you start, update [package.json](./package.json) and [plugin.php](./plugin.php) with your new target version number (`1.5.0` is used in the example below) and save those files.
-
-```sh
-# Create a release branch with your desired version number.
-git checkout -b release-v1.5.0
-
-# Make sure you're using the right version of Node.
-# (If this step errors, install the missing version and try again.)
-nvm use
-
-# Clear out node_modules/ and install packages from lockfile.
-rm -rf node_modules
-npm install
-
-# Stage and commit the updated package and plugin files, which should
-# now all reflect the new version number you updated earlier.
-git add plugin.php package.json package-lock.json
-git commit -m 'Bump version -> 1.5.0'
-
-# Run the build.
-npm run build
-```
-
-At this point, you should test the compiled code. If everything works correctly,
-
-```sh
-# Commit the updated asset bundle.
-git add assets
-git commit -m 'Build JS assets for v1.5.0'
-```
-
-Next, push your branch to GitHub and create a release PR. Once that PR is approved and merged, tag your release:
-
-```sh
-git tag v1.5.0
-git push origin --tags
-```
-
-You are done, and the updated plugin should be available inclusive of the built code at this new version number.
+After the release pull request is merged to main, another GitHub action will run to build the assets, clean-up development-related files, commit them and push a new tag.
