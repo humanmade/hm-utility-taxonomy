@@ -3,14 +3,20 @@
   "version": "1.4.2",
   "description": "A hidden taxonomy, used for filtering of posts/pages etc. in a way that is more performant than using the likes of post meta.",
   "private": true,
+  "engines": {
+    "node": ">=12.20.0"
+  },
   "scripts": {
     "build": "webpack",
     "dev": "webpack --mode=development --watch",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "changeset": "changeset",
+    "prettier": "prettier --check ."
   },
   "author": "Human Made",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
+    "@changesets/cli": "^2.24.1",
     "@humanmade/eslint-config": "^1.1.1",
     "@wordpress/babel-preset-default": "^4.20.0",
     "babel-eslint": "^10.1.0",

@@ -1,0 +1,94 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 12.x
+
+      - name: Install Dependencies
+        run: npm install
+
+      - id: create_version_pr
+        name: Create Release Pull Request
+        uses: changesets/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          title: New Release
+
+      - name: Update plugin version
+        shell: bash
+        if: steps.create_version_pr.outputs.hasChangesets != 'false'
+        run: |
+          NEW_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[", ]//g')
+          sed -i -E "s#(Version:[ ]+).*\$#\1${NEW_VERSION}#" plugin.php
+          git add plugin.php
+          git commit -m "Update plugin version -> ${NEW_VERSION}"
+          git push
+
+  check_new_version:
+    name: Check new version
+    runs-on: ubuntu-latest
+    outputs:
+      new_version: ${{ steps.get_version.outputs.new_version }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - id: get_version
+        name: Check if there's a new version
+        shell: bash
+        run: |
+          if [[ `git rev-parse @^:CHANGELOG.md` = `git rev-parse @:CHANGELOG.md` ]]; then
+            NEW_VERSION=''
+          else
+            NEW_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[", ]//g')
+          fi
+
+          echo "::set-output name=new_version::$NEW_VERSION"
+
+  publish:
+    name: Publish new version
+    runs-on: ubuntu-latest
+    needs: [check_new_version]
+    if: needs.check_new_version.outputs.new_version != ''
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 12.x
+
+      - name: Build assets
+        run: |
+          npm install
+          npm run build
+
+      - name: Create tag
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: '--force assets/dist'
+          remove: '-r .changeset .github .editorconfig .eslintignore .eslintrc.json .phpcs.xml.dist .prettierignore .prettierrc.json package-lock.json webpack.config.js assets/src'
+          tag: ${{ needs.check_new_version.outputs.new_version }}
+          push: '--tags'

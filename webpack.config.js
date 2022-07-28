@@ -9,18 +9,16 @@ module.exports = {
 		path: path.resolve( __dirname, 'assets/dist' ),
 	},
 	externals: {
-		/* eslint-disable key-spacing */
-		react:                   'React',
-		'react-dom':             'ReactDOM',
-		'@wordpress/api-fetch':  { this: [ 'wp', 'apiFetch' ] },
-		'@wordpress/compose':    { this: [ 'wp', 'compose' ] },
+		'react': 'React',
+		'react-dom': 'ReactDOM',
+		'@wordpress/api-fetch': { this: [ 'wp', 'apiFetch' ] },
+		'@wordpress/compose': { this: [ 'wp', 'compose' ] },
 		'@wordpress/components': { this: [ 'wp', 'components' ] },
-		'@wordpress/data':       { this: [ 'wp', 'data' ] },
-		'@wordpress/dom-ready':  { this: [ 'wp', 'domReady' ] },
-		'@wordpress/edit-post':  { this: [ 'wp', 'editPost' ] },
-		'@wordpress/plugins':    { this: [ 'wp', 'plugins' ] },
-		'@wordpress/url':        { this: [ 'wp', 'url' ] },
-		/* eslint-enable */
+		'@wordpress/data': { this: [ 'wp', 'data' ] },
+		'@wordpress/dom-ready': { this: [ 'wp', 'domReady' ] },
+		'@wordpress/edit-post': { this: [ 'wp', 'editPost' ] },
+		'@wordpress/plugins': { this: [ 'wp', 'plugins' ] },
+		'@wordpress/url': { this: [ 'wp', 'url' ] },
 	},
 	module: {
 		rules: [
@@ -30,9 +28,7 @@ module.exports = {
 				use: {
 					loader: 'babel-loader',
 					options: {
-						presets: [
-							'@wordpress/default',
-						],
+						presets: [ '@wordpress/default' ],
 					},
 				},
 			},

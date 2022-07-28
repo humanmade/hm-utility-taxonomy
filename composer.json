@@ -1,21 +1,21 @@
 {
-    "name": "humanmade/utility-taxonomy",
-    "description": "A hidden taxonomy, used for filtering of posts/pages etc. in a way that is more performant than using the likes of post meta.",
-    "type": "wordpress-plugin",
-    "require": {
-        "composer/installers": "^1.7"
-    },
-    "require-dev": {
-        "humanmade/coding-standards": "^1.1.2"
-    },
-    "license": "GPL-2.0-or-later",
-    "authors": [
-        {
-            "name": "Human Made",
-            "email": "hello@humanmade.com"
-        }
-    ],
-    "scripts": {
-        "lint": "phpcs -p -s -v ."
+  "name": "humanmade/utility-taxonomy",
+  "description": "A hidden taxonomy, used for filtering of posts/pages etc. in a way that is more performant than using the likes of post meta.",
+  "type": "wordpress-plugin",
+  "require": {
+    "composer/installers": "^1.7"
+  },
+  "require-dev": {
+    "humanmade/coding-standards": "^1.1.2"
+  },
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Human Made",
+      "email": "hello@humanmade.com"
     }
+  ],
+  "scripts": {
+    "lint": "phpcs -p -s -v ."
+  }
 }
