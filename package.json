@@ -9,7 +9,8 @@
   "scripts": {
     "build": "webpack",
     "dev": "webpack --mode=development --watch",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "changeset": "changeset"
   },
   "author": "Human Made",
   "license": "GPL-2.0-or-later",
