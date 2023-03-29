@@ -57,7 +57,7 @@ export default function withTerm() {
 					} );
 				}
 
-				function handeNewTerm( newTerm ) {
+				function handleNewTerm( newTerm ) {
 					const { id, name, slug } = newTerm;
 
 					setTerm( {
@@ -70,11 +70,7 @@ export default function withTerm() {
 				createTerm( taxonomy, label, value )
 					.catch( response => {
 						if ( response instanceof Response ) {
-							response.json().then(
-								error => {
-									handleError( error );
-								}
-							);
+							response.json().then( handleError );
 						} else {
 							handleError( response );
 						}
@@ -85,13 +81,9 @@ export default function withTerm() {
 						}
 
 						if ( response instanceof Response ) {
-							response.json().then(
-								newTerm => {
-									handeNewTerm( newTerm );
-								}
-							);
+							response.json().then( handleNewTerm );
 						} else {
-							handeNewTerm( response );
+							handleNewTerm( response );
 						}
 					} );
 			}, [ label, taxonomy, value ] );
