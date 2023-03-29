@@ -6,7 +6,7 @@ import { addQueryArgs } from '@wordpress/url';
 
 export function searchTerms( taxonomy, slug ) {
 	return apiFetch( {
-		parse: false,
+		parse: true,
 		path: addQueryArgs( `/wp/v2/${ taxonomy }`, {
 			slug,
 			_fields: 'id,name,slug',
@@ -17,7 +17,7 @@ export function searchTerms( taxonomy, slug ) {
 export function createTerm( taxonomy, name, slug ) {
 	return apiFetch( {
 		method: 'POST',
-		parse: false,
+		parse: true,
 		path: `/wp/v2/${ taxonomy }`,
 		data: {
 			name,
@@ -33,42 +33,66 @@ export default function withTerm() {
 			const [ term, setTerm ] = useState( null );
 
 			useEffect( () => {
+				function handleSearchTerms( terms ) {
+					if ( terms.length ) {
+						setTerm( terms[ 0 ] );
+					}
+				}
+
+				function handleError( error ) {
+					if ( error.code !== 'term_exists' ) {
+						return Promise.reject( error );
+					}
+
+					return searchTerms( taxonomy, value ).then( searchTermsResponse => {
+						if ( searchTermsResponse instanceof Response ) {
+							searchTermsResponse.json().then(
+								terms => {
+									handleSearchTerms( terms );
+								}
+							);
+						} else {
+							handleSearchTerms( searchTermsResponse );
+						}
+					} );
+				}
+
+				function handeNewTerm( newTerm ) {
+					const { id, name, slug } = newTerm;
+
+					setTerm( {
+						id,
+						name,
+						slug,
+					} );
+				}
+
 				createTerm( taxonomy, label, value )
 					.catch( response => {
-						response.json().then(
-							error => {
-								if ( error.code !== 'term_exists' ) {
-									return Promise.reject( error );
+						if ( response instanceof Response ) {
+							response.json().then(
+								error => {
+									handleError( error );
 								}
-
-								return searchTerms( taxonomy, value ).then( searchTermsResponse => {
-									searchTermsResponse.json().then(
-										terms => {
-											if ( terms.length ) {
-												setTerm( terms[ 0 ] );
-											}
-										}
-									);
-								} );
-							}
-						);
+							);
+						} else {
+							handleError( response );
+						}
 					} )
 					.then( response => {
 						if ( ! response ) {
 							return;
 						}
 
-						response.json().then(
-							newTerm => {
-								const { id, name, slug } = newTerm;
-
-								setTerm( {
-									id,
-									name,
-									slug,
-								} );
-							}
-						);
+						if ( response instanceof Response ) {
+							response.json().then(
+								newTerm => {
+									handeNewTerm( newTerm );
+								}
+							);
+						} else {
+							handeNewTerm( response );
+						}
 					} );
 			}, [ label, taxonomy, value ] );
 
