@@ -6,7 +6,7 @@ import { addQueryArgs } from '@wordpress/url';
 
 export function searchTerms( taxonomy, slug ) {
 	return apiFetch( {
-		parse: true,
+		parse: false,
 		path: addQueryArgs( `/wp/v2/${ taxonomy }`, {
 			slug,
 			_fields: 'id,name,slug',
@@ -17,7 +17,7 @@ export function searchTerms( taxonomy, slug ) {
 export function createTerm( taxonomy, name, slug ) {
 	return apiFetch( {
 		method: 'POST',
-		parse: true,
+		parse: false,
 		path: `/wp/v2/${ taxonomy }`,
 		data: {
 			name,
@@ -34,29 +34,41 @@ export default function withTerm() {
 
 			useEffect( () => {
 				createTerm( taxonomy, label, value )
-					.catch( error => {
-						if ( error.code !== 'term_exists' ) {
-							return Promise.reject( error );
-						}
+					.catch( response => {
+						response.json().then(
+							error => {
+								if ( error.code !== 'term_exists' ) {
+									return Promise.reject( error );
+								}
 
-						return searchTerms( taxonomy, value ).then( terms => {
-							if ( terms.length ) {
-								setTerm( terms[ 0 ] );
+								return searchTerms( taxonomy, value ).then( searchTermsResponse => {
+									searchTermsResponse.json().then(
+										terms => {
+											if ( terms.length ) {
+												setTerm( terms[ 0 ] );
+											}
+										}
+									);
+								} );
 							}
-						} );
+						);
 					} )
-					.then( newTerm => {
-						if ( ! newTerm ) {
+					.then( response => {
+						if ( ! response ) {
 							return;
 						}
 
-						const { id, name, slug } = newTerm;
+						response.json().then(
+							newTerm => {
+								const { id, name, slug } = newTerm;
 
-						setTerm( {
-							id,
-							name,
-							slug,
-						} );
+								setTerm( {
+									id,
+									name,
+									slug,
+								} );
+							}
+						);
 					} );
 			}, [ label, taxonomy, value ] );
 
