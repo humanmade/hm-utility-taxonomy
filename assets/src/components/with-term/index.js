@@ -46,11 +46,7 @@ export default function withTerm() {
 
 					return searchTerms( taxonomy, value ).then( searchTermsResponse => {
 						if ( searchTermsResponse instanceof Response ) {
-							searchTermsResponse.json().then(
-								terms => {
-									handleSearchTerms( terms );
-								}
-							);
+							searchTermsResponse.json().then( handleSearchTerms );
 						} else {
 							handleSearchTerms( searchTermsResponse );
 						}
