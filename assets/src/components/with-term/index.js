@@ -33,30 +33,54 @@ export default function withTerm() {
 			const [ term, setTerm ] = useState( null );
 
 			useEffect( () => {
-				createTerm( taxonomy, label, value )
-					.catch( error => {
-						if ( error.code !== 'term_exists' ) {
-							return Promise.reject( error );
-						}
+				function handleSearchTerms( terms ) {
+					if ( terms.length ) {
+						setTerm( terms[ 0 ] );
+					}
+				}
 
-						return searchTerms( taxonomy, value ).then( terms => {
-							if ( terms.length ) {
-								setTerm( terms[ 0 ] );
-							}
-						} );
+				function handleError( error ) {
+					if ( error.code !== 'term_exists' ) {
+						return Promise.reject( error );
+					}
+
+					return searchTerms( taxonomy, value ).then( searchTermsResponse => {
+						if ( searchTermsResponse instanceof Response ) {
+							searchTermsResponse.json().then( handleSearchTerms );
+						} else {
+							handleSearchTerms( searchTermsResponse );
+						}
+					} );
+				}
+
+				function handleNewTerm( newTerm ) {
+					const { id, name, slug } = newTerm;
+
+					setTerm( {
+						id,
+						name,
+						slug,
+					} );
+				}
+
+				createTerm( taxonomy, label, value )
+					.catch( response => {
+						if ( response instanceof Response ) {
+							response.json().then( handleError );
+						} else {
+							handleError( response );
+						}
 					} )
-					.then( newTerm => {
-						if ( ! newTerm ) {
+					.then( response => {
+						if ( ! response ) {
 							return;
 						}
 
-						const { id, name, slug } = newTerm;
-
-						setTerm( {
-							id,
-							name,
-							slug,
-						} );
+						if ( response instanceof Response ) {
+							response.json().then( handleNewTerm );
+						} else {
+							handleNewTerm( response );
+						}
 					} );
 			}, [ label, taxonomy, value ] );
 
