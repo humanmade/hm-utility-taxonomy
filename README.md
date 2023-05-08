@@ -112,7 +112,7 @@ npm install
 # Stage and commit the updated package and plugin files, which should
 # now all reflect the new version number you updated earlier.
 # Note namespace.php contains version number in wp_enqueue_script.
-git add plugin.php namespace.php package.json package-lock.json
+git add plugin.php ./inc/namespace.php package.json package-lock.json
 git commit -m 'Bump version -> 1.5.0'
 
 # Run the build.
