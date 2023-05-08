@@ -95,7 +95,7 @@ After one or more PRs has merged to `main`, create a new release branch and foll
 
 Note that this process assumes you [have `nvm` installed](https://github.com/nvm-sh/nvm).
 
-Before you start, update [package.json](./package.json) and [plugin.php](./plugin.php) with your new target version number (`1.5.0` is used in the example below) and save those files.
+Before you start, update [package.json](./package.json), [plugin.php](./plugin.php) and [namespace.php](./inc/namespace.php) with your new target version number (`1.5.0` is used in the example below) and save those files.
 
 ```sh
 # Create a release branch with your desired version number.
@@ -111,7 +111,8 @@ npm install
 
 # Stage and commit the updated package and plugin files, which should
 # now all reflect the new version number you updated earlier.
-git add plugin.php package.json package-lock.json
+# Note namespace.php contains version number in wp_enqueue_script.
+git add plugin.php namespace.php package.json package-lock.json
 git commit -m 'Bump version -> 1.5.0'
 
 # Run the build.
