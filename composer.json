@@ -3,10 +3,16 @@
     "description": "A hidden taxonomy, used for filtering of posts/pages etc. in a way that is more performant than using the likes of post meta.",
     "type": "wordpress-plugin",
     "require": {
-        "composer/installers": "^1.7"
+        "composer/installers": "^1.7 || ^2.0"
     },
     "require-dev": {
         "humanmade/coding-standards": "^1.1.2"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     },
     "license": "GPL-2.0-or-later",
     "authors": [
